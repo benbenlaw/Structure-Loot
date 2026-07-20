@@ -1,0 +1,11 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 1200,
+  "loot_tables": [
+    "minecraft:chests/ancient_city",
+    "minecraft:chests/ancient_city_ice_box"
+  ],
+  "rf_per_tick": 1600,
+  "rolls": 1,
+  "structure": "minecraft:ancient_city"
+}

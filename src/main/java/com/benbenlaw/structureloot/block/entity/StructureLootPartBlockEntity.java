@@ -2,10 +2,12 @@ package com.benbenlaw.structureloot.block.entity;
 
 import com.benbenlaw.core.block.entity.SyncableBlockEntity;
 import com.benbenlaw.structureloot.block.SLBlockEntities;
+import com.benbenlaw.structureloot.util.EnergyHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 
 public class StructureLootPartBlockEntity extends SyncableBlockEntity {
 
@@ -26,6 +28,21 @@ public class StructureLootPartBlockEntity extends SyncableBlockEntity {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
+
+    public ItemStacksResourceHandler getItemHandler() {
+        assert level != null;
+        StructureLootBlockEntity controller = (StructureLootBlockEntity) level.getBlockEntity(controllerPos);
+        assert controller != null;
+        return controller.getItemHandler();
+    }
+
+    public EnergyHandler getEnergyHandler() {
+        assert level != null;
+        StructureLootBlockEntity controller = (StructureLootBlockEntity) level.getBlockEntity(controllerPos);
+        assert controller != null;
+        return controller.getEnergyHandler();
+    }
+
     @Override
     protected void saveAdditional(ValueOutput output) {
         output.putInt("ControllerX", controllerPos.getX());

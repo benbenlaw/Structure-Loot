@@ -7,6 +7,7 @@ import com.benbenlaw.structureloot.block.entity.StructureLootBlockEntity;
 import com.benbenlaw.structureloot.block.entity.StructureLootPartBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;

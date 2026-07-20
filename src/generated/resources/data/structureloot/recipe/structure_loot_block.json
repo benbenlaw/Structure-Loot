@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "minecraft:stone_bricks",
+    "B": "#minecraft:logs",
+    "C": "#c:chests/wooden"
+  },
+  "pattern": [
+    "AAA",
+    "BCB",
+    "AAA"
+  ],
+  "result": {
+    "id": "structureloot:structure_loot_block"
+  }
+}

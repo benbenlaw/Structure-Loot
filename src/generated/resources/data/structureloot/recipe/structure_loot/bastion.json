@@ -1,0 +1,14 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 1200,
+  "loot_tables": [
+    "minecraft:chests/bastion_bridge",
+    "minecraft:chests/bastion_hoglin_stable",
+    "minecraft:chests/bastion_housing",
+    "minecraft:chests/bastion_other",
+    "minecraft:chests/bastion_treasure"
+  ],
+  "rf_per_tick": 1600,
+  "rolls": 3,
+  "structure": "minecraft:bastion"
+}

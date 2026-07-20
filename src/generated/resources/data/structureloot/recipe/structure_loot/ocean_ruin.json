@@ -1,0 +1,11 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 800,
+  "loot_tables": [
+    "minecraft:chests/underwater_ruin_big",
+    "minecraft:chests/underwater_ruin_small"
+  ],
+  "rf_per_tick": 800,
+  "rolls": 1,
+  "structure": "minecraft:ocean_ruin"
+}

@@ -78,6 +78,9 @@ dependencies {
     implementation("mezz.jei:jei-${jei_mc_version}-neoforge:${jei_version}")
     //BBL Core
     implementation("curse.maven:bblcore-1135181:${core_version}")
+    //Ender IO
+    runtimeOnly("curse.maven:ender-io-64578:8004141")
+
 }
 
 tasks.withType(ProcessResources).configureEach {

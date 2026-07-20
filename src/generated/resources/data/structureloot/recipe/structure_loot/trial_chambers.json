@@ -1,0 +1,16 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 1000,
+  "loot_tables": [
+    "minecraft:chests/trial_chambers/entrance",
+    "minecraft:chests/trial_chambers/corridor",
+    "minecraft:chests/trial_chambers/intersection",
+    "minecraft:chests/trial_chambers/supply",
+    "minecraft:chests/trial_chambers/reward",
+    "minecraft:chests/trial_chambers/reward_unique",
+    "minecraft:chests/trial_chambers/reward_ominous_unique"
+  ],
+  "rf_per_tick": 1000,
+  "rolls": 5,
+  "structure": "minecraft:trial_chambers"
+}

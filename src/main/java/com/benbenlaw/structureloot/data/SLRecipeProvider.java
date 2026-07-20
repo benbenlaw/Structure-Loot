@@ -1,11 +1,16 @@
 package com.benbenlaw.structureloot.data;
 
 import com.benbenlaw.structureloot.StructureLoot;
+import com.benbenlaw.structureloot.block.SLBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -39,11 +44,21 @@ public class SLRecipeProvider extends RecipeProvider {
     @Override
     protected void buildRecipes() {
 
+        shaped(RecipeCategory.MISC, SLBlocks.STRUCTURE_LOOT_BLOCK.asItem(), 1)
+                .pattern("AAA")
+                .pattern("BCB")
+                .pattern("AAA")
+                .define('A', Blocks.STONE_BRICKS)
+                .define('B', ItemTags.LOGS)
+                .define('C', Tags.Items.CHESTS_WOODEN)
+                .unlockedBy("has_structure_loot_token", has(Tags.Items.CHESTS_WOODEN))
+                .save(output);
+
         simpleLootRecipe("simple_dungeon", "chests/simple_dungeon");
 
         simpleLootRecipe("mineshaft", "chests/abandoned_mineshaft");
 
-        simpleLootRecipe("stronghold",
+        simpleLootRecipe("stronghold", 1, 1000, 2000,
                 "chests/stronghold_corridor",
                 "chests/stronghold_crossing",
                 "chests/stronghold_library"
@@ -57,7 +72,7 @@ public class SLRecipeProvider extends RecipeProvider {
 
         simpleLootRecipe("woodland_mansion", "chests/woodland_mansion");
 
-        simpleLootRecipe("shipwreck",
+        simpleLootRecipe("shipwreck", 1, 1000, 1000,
                 "chests/shipwreck_supply",
                 "chests/shipwreck_treasure",
                 "chests/shipwreck_map"
@@ -65,14 +80,14 @@ public class SLRecipeProvider extends RecipeProvider {
 
         simpleLootRecipe("buried_treasure", "chests/buried_treasure");
 
-        simpleLootRecipe("ocean_ruin",
+        simpleLootRecipe("ocean_ruin", 1, 800, 800,
                 "chests/underwater_ruin_big",
                 "chests/underwater_ruin_small"
         );
 
         simpleLootRecipe("pillager_outpost", "chests/pillager_outpost");
 
-        simpleLootRecipe("village_common",
+        simpleLootRecipe("village_common", 3, 600, 1000,
                 "chests/village/village_armorer",
                 "chests/village/village_butcher",
                 "chests/village/village_cartographer",
@@ -106,12 +121,12 @@ public class SLRecipeProvider extends RecipeProvider {
                 "chests/village/village_taiga_house"
         );
 
-        simpleLootRecipe("ancient_city",
+        simpleLootRecipe("ancient_city", 1, 1200, 1600,
                 "chests/ancient_city",
                 "chests/ancient_city_ice_box"
         );
 
-        simpleLootRecipe("bastion",
+        simpleLootRecipe("bastion", 3, 1200, 1600,
                 "chests/bastion_bridge",
                 "chests/bastion_hoglin_stable",
                 "chests/bastion_housing",
@@ -125,7 +140,7 @@ public class SLRecipeProvider extends RecipeProvider {
 
         simpleLootRecipe("end_city", "chests/end_city_treasure");
 
-        simpleLootRecipe("trial_chambers",
+        simpleLootRecipe("trial_chambers", 5, 1000, 1000,
                 "chests/trial_chambers/entrance",
                 "chests/trial_chambers/corridor",
                 "chests/trial_chambers/intersection",
@@ -140,7 +155,14 @@ public class SLRecipeProvider extends RecipeProvider {
 
         List<Identifier> lootTables = Stream.of(lootTable).map(Identifier::withDefaultNamespace).toList();
 
-        structureLootRecipe(Identifier.withDefaultNamespace(structure), lootTables, 2).save(output);
+        structureLootRecipe(Identifier.withDefaultNamespace(structure), lootTables, 2, 400, 600).save(output);
+    }
+
+    public void simpleLootRecipe(String structure, int rolls, int duration, int rfPerTick, String... lootTable) {
+
+        List<Identifier> lootTables = Stream.of(lootTable).map(Identifier::withDefaultNamespace).toList();
+
+        structureLootRecipe(Identifier.withDefaultNamespace(structure), lootTables, rolls, duration, rfPerTick).save(output);
     }
 
 }

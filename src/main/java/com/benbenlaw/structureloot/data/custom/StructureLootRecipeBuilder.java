@@ -27,16 +27,21 @@ public class StructureLootRecipeBuilder implements RecipeBuilder {
     protected Identifier structure;
     protected List<Identifier> lootTables;
     protected int rolls;
+    protected int duration;
+    protected int rfPerTick;
     protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-    public StructureLootRecipeBuilder(Identifier structure, List<Identifier> lootTables, int rolls) {
+    public StructureLootRecipeBuilder(Identifier structure, List<Identifier> lootTables, int rolls, int duration, int rfPerTick) {
         this.structure = structure;
         this.lootTables = lootTables;
         this.rolls = rolls;
+        this.duration = duration;
+        this.rfPerTick = rfPerTick;
+
     }
 
-    public static StructureLootRecipeBuilder structureLootRecipe(Identifier structure, List<Identifier> lootTables, int rolls) {
-        return new StructureLootRecipeBuilder(structure, lootTables, rolls);
+    public static StructureLootRecipeBuilder structureLootRecipe(Identifier structure, List<Identifier> lootTables, int rolls, int duration, int rfPerTick) {
+        return new StructureLootRecipeBuilder(structure, lootTables, rolls, duration, rfPerTick);
     }
 
     @Override
@@ -72,7 +77,7 @@ public class StructureLootRecipeBuilder implements RecipeBuilder {
                 .rewards(AdvancementRewards.Builder.recipe(resourceKey))
                 .requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(builder::addCriterion);
-        StructureLootRecipe structureLootRecipe = new StructureLootRecipe(this.structure, this.lootTables, this.rolls);
+        StructureLootRecipe structureLootRecipe = new StructureLootRecipe(this.structure, this.lootTables, this.rolls, this.duration, this.rfPerTick);
         recipeOutput.accept(resourceKey, structureLootRecipe, builder.build(resourceKey.identifier().withPrefix("recipes/structures/")));
 
     }

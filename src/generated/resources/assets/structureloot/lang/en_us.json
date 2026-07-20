@@ -1,0 +1,9 @@
+{
+  "block.structureloot.structure_loot_block": "Structure Loot Generator",
+  "item.structureloot.structure_loot_block": "Structure Loot Generator",
+  "item.structureloot.structure_token": "Structure Token",
+  "itemGroup.structureloot": "Structure Loot",
+  "tooltip.structureloot.structure": "Structure: %s",
+  "tooltip.structureloot.structure_loot_block": "Places a 3x3x3 block that creates loot from structures using Structure Tokens and RF",
+  "tooltip.structureloot.structure_token": "Used inside the Structure Loot Generator to create loot!"
+}

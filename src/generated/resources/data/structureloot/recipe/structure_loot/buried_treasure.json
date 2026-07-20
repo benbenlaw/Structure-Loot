@@ -1,0 +1,10 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 400,
+  "loot_tables": [
+    "minecraft:chests/buried_treasure"
+  ],
+  "rf_per_tick": 600,
+  "rolls": 2,
+  "structure": "minecraft:buried_treasure"
+}

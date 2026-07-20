@@ -29,7 +29,7 @@ public class StructureLootMenu extends SimpleAbstractContainerMenu {
     private int scrollOffset = 0;
 
     public StructureLootMenu(int containerID, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerID, inventory, extraData.readBlockPos(), new SimpleContainerData(2));
+        this(containerID, inventory, extraData.readBlockPos(), new SimpleContainerData(4));
     }
 
     public StructureLootMenu(int containerID, Inventory inventory, BlockPos blockPos, ContainerData data) {
@@ -44,11 +44,11 @@ public class StructureLootMenu extends SimpleAbstractContainerMenu {
         assert blockEntity != null;
 
 
-        this.addSlot(new InputSlot(blockEntity.getItemHandler(), blockEntity.getItemHandler()::set, 0, 8, 35) {
+        this.addSlot(new InputSlot(blockEntity.getItemHandler(), blockEntity.getItemHandler()::set, 0, 35, 17) {
 
         });
 
-        this.addSlot(new InputSlot(blockEntity.getItemHandler(), blockEntity.getItemHandler()::set, 1, 8, 53) {
+        this.addSlot(new InputSlot(blockEntity.getItemHandler(), blockEntity.getItemHandler()::set, 1, 35, 35) {
 
         });
 
@@ -56,7 +56,7 @@ public class StructureLootMenu extends SimpleAbstractContainerMenu {
             int col = i % COLUMNS;
             int row = i / COLUMNS;
 
-            this.addSlot(new ScrollableResultSlot(this, i, 62 + col * 18, 17 + row * 18));
+            this.addSlot(new ScrollableResultSlot(this, i + 1, 62 + col * 18, 17 + row * 18));
         }
 
         addDataSlots(data);
@@ -93,13 +93,13 @@ public class StructureLootMenu extends SimpleAbstractContainerMenu {
     @Override
     public ItemStack quickMoveStack(Player playerIn, int pIndex) {
         Slot sourceSlot = this.slots.get(pIndex);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
+        if (!sourceSlot.hasItem()) return ItemStack.EMPTY;
 
         ItemStack sourceStack = sourceSlot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
 
         int inputStart = 36;
-        int inputEnd = 38; // slots 36 and 37 (the 2 input slots)
+        int inputEnd = 38;
         int resultStart = 38;
         int resultEnd = 38 + VISIBLE_SLOTS;
 
@@ -127,6 +127,19 @@ public class StructureLootMenu extends SimpleAbstractContainerMenu {
 
         sourceSlot.onTake(playerIn, sourceStack);
         return copyOfSourceStack;
+    }
+
+    public boolean hasEnergy() {
+        return data.get(2) > 0 ;
+    }
+
+    public int getEnergyFilled() {
+
+        int progress = this.data.get(2);
+        int maxProgress = this.data.get(3);  // Max Progress
+        int progressArrowSize = 52; // This is the height in pixels of your arrow
+
+        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
 
 }

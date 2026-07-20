@@ -18,9 +18,15 @@ public class SLLangProvider extends LanguageProvider {
 
         //Items
         add("item.structureloot.structure_token", "Structure Token");
+        add("item.structureloot.structure_loot_block", "Structure Loot Generator");
+
+        //Blocks
+        add("block.structureloot.structure_loot_block", "Structure Loot Generator");
 
         //Tooltips
         add("tooltip.structureloot.structure", "Structure: %s");
+        add("tooltip.structureloot.structure_loot_block", "Places a 3x3x3 block that creates loot from structures using Structure Tokens and RF");
+        add("tooltip.structureloot.structure_token", "Used inside the Structure Loot Generator to create loot!");
 
     }
 

@@ -1,0 +1,10 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 400,
+  "loot_tables": [
+    "minecraft:chests/village/village_desert_house"
+  ],
+  "rf_per_tick": 600,
+  "rolls": 2,
+  "structure": "minecraft:village_desert"
+}

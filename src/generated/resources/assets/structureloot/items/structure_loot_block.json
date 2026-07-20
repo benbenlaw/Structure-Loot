@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "structureloot:item/structure_loot_block"
+  }
+}

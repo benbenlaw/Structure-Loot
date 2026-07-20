@@ -16,13 +16,15 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
-public record StructureLootRecipe(Identifier structure, List<Identifier> lootTables, int rolls) implements Recipe<NoInventoryRecipe> {
+public record StructureLootRecipe(Identifier structure, List<Identifier> lootTables, int rolls, int duration, int rfPerTick) implements Recipe<NoInventoryRecipe> {
 
     public static final MapCodec<StructureLootRecipe> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     Identifier.CODEC.fieldOf("structure").forGetter(StructureLootRecipe::structure),
                     Identifier.CODEC.listOf().fieldOf("loot_tables").forGetter(StructureLootRecipe::lootTables),
-                    Codec.INT.optionalFieldOf("rolls", -1).forGetter(StructureLootRecipe::rolls)
+                    Codec.INT.fieldOf("rolls").forGetter(StructureLootRecipe::rolls),
+                    Codec.INT.fieldOf("duration").forGetter(StructureLootRecipe::duration),
+                    Codec.INT.fieldOf("rf_per_tick").forGetter(StructureLootRecipe::rfPerTick)
             ).apply(instance, StructureLootRecipe::new)
     );
 
@@ -38,13 +40,17 @@ public record StructureLootRecipe(Identifier structure, List<Identifier> lootTab
         Identifier structure = Identifier.STREAM_CODEC.decode(buffer);
         List<Identifier> lootTables = Identifier.STREAM_CODEC.apply(ByteBufCodecs.list()).decode(buffer);
         int roles = buffer.readInt();
-        return new StructureLootRecipe(structure, lootTables, roles);
+        int duration = buffer.readInt();
+        int rfPerTick = buffer.readInt();
+        return new StructureLootRecipe(structure, lootTables, roles, duration, rfPerTick);
     }
 
     private static void write(RegistryFriendlyByteBuf buffer, StructureLootRecipe recipe) {
         Identifier.STREAM_CODEC.encode(buffer, recipe.structure);
         Identifier.STREAM_CODEC.apply(ByteBufCodecs.list()).encode(buffer, recipe.lootTables);
         buffer.writeInt(recipe.rolls);
+        buffer.writeInt(recipe.duration);
+        buffer.writeInt(recipe.rfPerTick);
     }
     @Override
     public boolean matches(@NotNull NoInventoryRecipe container, @NotNull Level level) {

@@ -1,0 +1,12 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 1000,
+  "loot_tables": [
+    "minecraft:chests/stronghold_corridor",
+    "minecraft:chests/stronghold_crossing",
+    "minecraft:chests/stronghold_library"
+  ],
+  "rf_per_tick": 2000,
+  "rolls": 1,
+  "structure": "minecraft:stronghold"
+}

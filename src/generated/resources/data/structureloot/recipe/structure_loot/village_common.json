@@ -1,0 +1,20 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 600,
+  "loot_tables": [
+    "minecraft:chests/village/village_armorer",
+    "minecraft:chests/village/village_butcher",
+    "minecraft:chests/village/village_cartographer",
+    "minecraft:chests/village/village_fisher",
+    "minecraft:chests/village/village_fletcher",
+    "minecraft:chests/village/village_mason",
+    "minecraft:chests/village/village_shepherd",
+    "minecraft:chests/village/village_tannery",
+    "minecraft:chests/village/village_temple",
+    "minecraft:chests/village/village_toolsmith",
+    "minecraft:chests/village/village_weaponsmith"
+  ],
+  "rf_per_tick": 1000,
+  "rolls": 3,
+  "structure": "minecraft:village_common"
+}

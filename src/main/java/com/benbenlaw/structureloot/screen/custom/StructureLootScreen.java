@@ -7,6 +7,8 @@ import com.benbenlaw.structureloot.StructureLoot;
 import com.benbenlaw.structureloot.network.packet.ChangeScrollOffsetPacket;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -14,11 +16,14 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
+import java.util.List;
+
 public class StructureLootScreen extends AbstractContainerScreen<StructureLootMenu> {
 
     private static final Identifier TEXTURE = StructureLoot.identifier("textures/gui/structure_loot_gui.png");
     private static final Identifier PROGRESS_ARROW = Core.identifier("progress_arrow");
     private static final Identifier SCROLL_ICON = StructureLoot.identifier("scroll");
+    private static final Identifier ENERGY_BAR = StructureLoot.identifier("energy_bar");
 
     private boolean isDraggingScrollbar = false;
 
@@ -36,7 +41,7 @@ public class StructureLootScreen extends AbstractContainerScreen<StructureLootMe
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
 
         if (menu.isCrafting()) {
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, PROGRESS_ARROW, 24, 16, 0, 0,x + 31, y + 35, menu.getScaledProgress() + 1, 16);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, PROGRESS_ARROW, 24, 16, 0, 0,x + 31, y + 53, menu.getScaledProgress() + 1, 16);
         }
 
         float max = menu.getMaxScroll();
@@ -45,6 +50,14 @@ public class StructureLootScreen extends AbstractContainerScreen<StructureLootMe
         int barY = y + 17 + (int)(scroll * 37);
 
         guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLL_ICON, 12, 15, 0, 0, x + 154, barY, 12, 15);
+
+        if (menu.hasEnergy()) {
+            int currentEnergyHeight = menu.getEnergyFilled();
+            int topOffset = 52 - currentEnergyHeight;
+
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, ENERGY_BAR, 16, 52,0, topOffset, x + 8, y + topOffset + 17, 16, currentEnergyHeight);
+        }
+
     }
 
     @Override
@@ -114,5 +127,28 @@ public class StructureLootScreen extends AbstractContainerScreen<StructureLootMe
 
         menu.setScrollOffset(next);
         ClientPacketDistributor.sendToServer(new ChangeScrollOffsetPacket(menu.containerId, next));
+    }
+
+    @Override
+    protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        super.extractTooltip(graphics, mouseX, mouseY);
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageHeight) / 2;
+
+        int barX = x + 8;
+        int barY = y + 16;
+        int barWidth = 16;
+        int barHeight = 52;
+
+        if (mouseX >= barX && mouseX <= barX + barWidth && mouseY >= barY && mouseY <= barY + barHeight) {
+            int currentEnergy = menu.data.get(2);
+            int maxEnergy = menu.data.get(3);
+
+            Component text = Component.literal("Energy: "+currentEnergy+" / "+maxEnergy+" FE");
+            List<ClientTooltipComponent> components = List.of(ClientTooltipComponent.create(text.getVisualOrderText()));
+            graphics.tooltip(this.font, components, mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null);
+
+        }
+
     }
 }
