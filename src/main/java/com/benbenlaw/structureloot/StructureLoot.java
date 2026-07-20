@@ -6,6 +6,7 @@ import com.benbenlaw.structureloot.block.entity.renderer.StructureLootBlockEntit
 import com.benbenlaw.structureloot.block.entity.renderer.StructureLootModel;
 import com.benbenlaw.structureloot.block.entity.renderer.StructureLootModelLayers;
 import com.benbenlaw.structureloot.data.SLLootModifierProvider;
+import com.benbenlaw.structureloot.item.SLCreativeTab;
 import com.benbenlaw.structureloot.item.SLDataComponents;
 import com.benbenlaw.structureloot.item.SLItems;
 import com.benbenlaw.structureloot.loot.SLLootModifiers;
@@ -43,6 +44,7 @@ public class StructureLoot {
         SLMenuTypes.MENUS.register(modEventBus);
         SLRecipeTypes.SERIALIZER.register(modEventBus);
         SLRecipeTypes.TYPES.register(modEventBus);
+        SLCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         SLLootModifiers.LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
 
         modEventBus.addListener(this::networkingSetup);

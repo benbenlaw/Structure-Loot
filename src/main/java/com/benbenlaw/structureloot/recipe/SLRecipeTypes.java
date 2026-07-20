@@ -16,9 +16,9 @@ public class SLRecipeTypes {
             DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, StructureLoot.MOD_ID);
 
     //Structure Loot Recipe
-    public static final Supplier<RecipeSerializer<StructureLootRecipe>> ENTITY_MELTING_SERIALIZER =
+    public static final Supplier<RecipeSerializer<StructureLootRecipe>> STRUCTURE_LOOT_SERIALIZER =
             SERIALIZER.register("structure_loot", () -> StructureLootRecipe.SERIALIZER);
-    public static final Supplier<RecipeType<StructureLootRecipe>> ENTITY_MELTING_TYPE =
+    public static final Supplier<RecipeType<StructureLootRecipe>> STRUCTURE_LOOT_TYPE =
             TYPES.register("structure_loot", () -> StructureLootRecipe.TYPE);
 
 }
