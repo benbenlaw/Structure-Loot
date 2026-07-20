@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "structureloot:block/structure_loot_block"
+    }
+  }
+}
