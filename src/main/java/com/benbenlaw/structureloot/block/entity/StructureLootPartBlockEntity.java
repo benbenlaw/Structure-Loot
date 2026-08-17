@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import org.jspecify.annotations.Nullable;
 
 public class StructureLootPartBlockEntity extends SyncableBlockEntity {
 
@@ -29,18 +30,22 @@ public class StructureLootPartBlockEntity extends SyncableBlockEntity {
         }
     }
 
-    public ItemStacksResourceHandler getItemHandler() {
-        assert level != null;
-        StructureLootBlockEntity controller = (StructureLootBlockEntity) level.getBlockEntity(controllerPos);
-        assert controller != null;
-        return controller.getItemHandler();
+    private @Nullable StructureLootBlockEntity getController() {
+        if (level == null || controllerPos.equals(BlockPos.ZERO)) return null;
+        if (level.getBlockEntity(controllerPos) instanceof StructureLootBlockEntity controller) {
+            return controller;
+        }
+        return null;
     }
 
-    public EnergyHandler getEnergyHandler() {
-        assert level != null;
-        StructureLootBlockEntity controller = (StructureLootBlockEntity) level.getBlockEntity(controllerPos);
-        assert controller != null;
-        return controller.getEnergyHandler();
+    public @Nullable ItemStacksResourceHandler getItemHandler() {
+        StructureLootBlockEntity controller = getController();
+        return controller != null ? controller.getItemHandler() : null;
+    }
+
+    public @Nullable EnergyHandler getEnergyHandler() {
+        StructureLootBlockEntity controller = getController();
+        return controller != null ? controller.getEnergyHandler() : null;
     }
 
     @Override
@@ -63,8 +68,8 @@ public class StructureLootPartBlockEntity extends SyncableBlockEntity {
     @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
-        if (level != null && !level.isClientSide()
-                && level.getBlockEntity(controllerPos) instanceof StructureLootBlockEntity controller) {
+        StructureLootBlockEntity controller = getController();
+        if (level != null && !level.isClientSide() && controller != null) {
             controller.breakStructure();
         }
     }

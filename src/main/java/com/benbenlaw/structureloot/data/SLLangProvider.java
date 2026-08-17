@@ -22,6 +22,7 @@ public class SLLangProvider extends LanguageProvider {
 
         //Blocks
         add("block.structureloot.structure_loot_block", "Structure Loot Generator");
+        add("block.structureloot.structure_loot_part", "Structure Loot Generator");
 
         //Tooltips
         add("tooltip.structureloot.structure", "Structure: %s");

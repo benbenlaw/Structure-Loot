@@ -1,5 +1,6 @@
 {
   "block.structureloot.structure_loot_block": "Structure Loot Generator",
+  "block.structureloot.structure_loot_part": "Structure Loot Generator",
   "item.structureloot.structure_loot_block": "Structure Loot Generator",
   "item.structureloot.structure_token": "Structure Token",
   "itemGroup.structureloot": "Structure Loot",
