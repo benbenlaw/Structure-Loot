@@ -11,8 +11,8 @@ public class SLDataComponents {
 
     public static final DeferredRegister<DataComponentType<?>> COMPONENTS = DeferredRegister.create(BuiltInRegistries.DATA_COMPONENT_TYPE, StructureLoot.MOD_ID);
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Identifier>> STRUCTURE_ID =
-            COMPONENTS.register("structure_id", () ->
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Identifier>> LOOT_ID =
+            COMPONENTS.register("loot_id", () ->
                     DataComponentType.<Identifier>builder()
                             .persistent(Identifier.CODEC)
                             .networkSynchronized(Identifier.STREAM_CODEC)

@@ -1,12 +1,19 @@
 {
   "type": "structureloot:structure_loot",
   "duration": 1000,
+  "loot_id": "minecraft:stronghold",
   "loot_tables": [
-    "minecraft:chests/stronghold_corridor",
-    "minecraft:chests/stronghold_crossing",
-    "minecraft:chests/stronghold_library"
+    {
+      "table": "minecraft:chests/stronghold_corridor"
+    },
+    {
+      "table": "minecraft:chests/stronghold_crossing"
+    },
+    {
+      "table": "minecraft:chests/stronghold_library"
+    }
   ],
+  "max_durability": 6,
   "rf_per_tick": 2000,
-  "rolls": 1,
-  "structure": "minecraft:stronghold"
+  "rolls": 1
 }

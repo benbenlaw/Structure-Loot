@@ -1,10 +1,12 @@
 {
   "type": "structureloot:structure_loot",
   "duration": 400,
+  "loot_id": "minecraft:woodland_mansion",
   "loot_tables": [
-    "minecraft:chests/woodland_mansion"
+    {
+      "table": "minecraft:chests/woodland_mansion"
+    }
   ],
   "rf_per_tick": 600,
-  "rolls": 2,
-  "structure": "minecraft:woodland_mansion"
+  "rolls": 2
 }

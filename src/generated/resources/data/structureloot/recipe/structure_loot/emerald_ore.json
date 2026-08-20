@@ -1,0 +1,15 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 600,
+  "loot_id": "minecraft:emerald_ore",
+  "loot_tables": [
+    {
+      "type": "block",
+      "block": "minecraft:emerald_ore",
+      "table": "minecraft:blocks/emerald_ore"
+    }
+  ],
+  "max_durability": 19,
+  "rf_per_tick": 800,
+  "rolls": 1
+}

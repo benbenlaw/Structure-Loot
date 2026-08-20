@@ -80,6 +80,9 @@ dependencies {
     implementation("curse.maven:bblcore-1135181:${core_version}")
     //Ender IO
     runtimeOnly("curse.maven:ender-io-64578:8004141")
+    //Curios
+    implementation("curse.maven:curios-309927:8463519")
+
 
 }
 

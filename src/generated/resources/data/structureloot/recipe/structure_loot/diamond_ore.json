@@ -1,0 +1,15 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 600,
+  "loot_id": "minecraft:diamond_ore",
+  "loot_tables": [
+    {
+      "type": "block",
+      "block": "minecraft:diamond_ore",
+      "table": "minecraft:blocks/diamond_ore"
+    }
+  ],
+  "max_durability": 20,
+  "rf_per_tick": 800,
+  "rolls": 1
+}

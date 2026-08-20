@@ -4,15 +4,19 @@ import com.benbenlaw.structureloot.StructureLoot;
 import com.benbenlaw.structureloot.block.SLBlocks;
 import com.benbenlaw.structureloot.event.client.ClientRecipeCache;
 import com.benbenlaw.structureloot.recipe.StructureLootRecipe;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.EnumSet;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class SLCreativeTab {
 
@@ -32,12 +36,29 @@ public class SLCreativeTab {
                                 output.accept(SLBlocks.STRUCTURE_LOOT_BLOCK.get());
 
                                 ClientRecipeCache.getCachedStructureLootRecipes().forEach(recipe -> {
-                                    ItemStack token = new ItemStack(SLItems.STRUCTURE_TOKEN.get());
-                                    token.set(SLDataComponents.STRUCTURE_ID.get(), recipe.structure());
-                                    output.accept(token);
+                                    EnumSet<StructureLootRecipe.LootContextType> typesPresent =
+                                            recipe.lootTables().stream()
+                                                    .map(StructureLootRecipe.LootRoll::type)
+                                                    .collect(Collectors.toCollection(() ->
+                                                            EnumSet.noneOf(StructureLootRecipe.LootContextType.class)));
+
+                                    typesPresent.forEach(type -> {
+                                        ItemStack token = new ItemStack(itemForType(type));
+                                        token.set(SLDataComponents.LOOT_ID.get(), recipe.lootId());
+                                        token.set(DataComponents.MAX_DAMAGE, recipe.maxDurability());
+                                        output.accept(token);
+                                    });
                                 });
                             })
                             .build());
+
+    private static Item itemForType(StructureLootRecipe.LootContextType type) {
+        return switch (type) {
+            case BLOCK -> SLItems.BLOCK_TOKEN.get();
+            case ENTITY -> SLItems.ENTITY_TOKEN.get();
+            case GENERIC -> SLItems.STRUCTURE_TOKEN.get();
+        };
+    }
 
 
 

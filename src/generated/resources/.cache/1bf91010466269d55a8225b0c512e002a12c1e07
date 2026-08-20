@@ -1,5 +1,11 @@
-// 26.1.2	2026-07-20T13:16:08.6981178	Model Definitions - structureloot
+// 26.1.2	2026-08-20T09:31:13.2849886	Model Definitions - structureloot
+5794349033b51ac2615947bef8a85a082c65b371 assets/structureloot/items/block_token.json
+077d8af819a13c68d5bd7c0cae01ac26652ea666 assets/structureloot/items/entity_token.json
 d016388cbd2d58c798f47acfe9ea36ffd93b389c assets/structureloot/items/structure_loot_block.json
 b9d478e1448daaaf612515e1fc181b32c5a5ee9c assets/structureloot/items/structure_token.json
+88ebe55a435abb8cde399fb2b687a0de739c09a7 assets/structureloot/items/token_charm.json
+3def80603719c24e759a922d2cad46b351dc0438 assets/structureloot/models/item/block_token.json
+781a9adc5324d8600c5afe857b08931c0178b0b3 assets/structureloot/models/item/entity_token.json
 495d35da510012756986a237e75d528b7b859cc9 assets/structureloot/models/item/structure_loot_block.json
 a72ff2fec2605f4523f118505addde0f2da31b0a assets/structureloot/models/item/structure_token.json
+a7adbc957600b66978f52634ffa1d8b9b27a2b47 assets/structureloot/models/item/token_charm.json

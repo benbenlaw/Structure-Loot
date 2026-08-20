@@ -1,10 +1,12 @@
 {
   "type": "structureloot:structure_loot",
   "duration": 400,
+  "loot_id": "minecraft:desert_pyramid",
   "loot_tables": [
-    "minecraft:chests/desert_pyramid"
+    {
+      "table": "minecraft:chests/desert_pyramid"
+    }
   ],
   "rf_per_tick": 600,
-  "rolls": 2,
-  "structure": "minecraft:desert_pyramid"
+  "rolls": 2
 }

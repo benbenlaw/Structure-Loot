@@ -7,11 +7,12 @@ import com.benbenlaw.structureloot.block.SLBlockEntities;
 import com.benbenlaw.structureloot.block.SLBlocks;
 import com.benbenlaw.structureloot.item.SLDataComponents;
 import com.benbenlaw.structureloot.recipe.StructureLootRecipe;
+import com.benbenlaw.structureloot.recipe.StructureLootRecipe.LootRoll;
 import com.benbenlaw.structureloot.screen.custom.StructureLootMenu;
 import com.benbenlaw.structureloot.util.EnergyHandler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -22,6 +23,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -29,12 +34,15 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
@@ -196,7 +204,7 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
         ItemStack structureStack = ItemUtil.getStack(inventory, STRUCTURE_SETTER);
         if (structureStack.isEmpty()) return null;
 
-        Identifier structureId = structureStack.get(SLDataComponents.STRUCTURE_ID.get());
+        Identifier structureId = structureStack.get(SLDataComponents.LOOT_ID.get());
         if (structureId == null) return null;
 
         return level.getServer().getRecipeManager()
@@ -205,7 +213,7 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
                 .stream()
                 .filter(holder -> holder.value().getType() == StructureLootRecipe.TYPE)
                 .map(holder -> (RecipeHolder<StructureLootRecipe>) holder)
-                .filter(holder -> holder.value().structure().equals(structureId))
+                .filter(holder -> holder.value().lootId().equals(structureId))
                 .findFirst()
                 .orElse(null);
     }
@@ -215,24 +223,22 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
 
         List<ItemStack> allDrops = new ArrayList<>();
         ReloadableServerRegistries.Holder lootRegistries = serverLevel.getServer().reloadableRegistries();
-        List<Identifier> tablesToRoll = new ArrayList<>(recipe.lootTables());
+        List<LootRoll> tableEntries = recipe.lootTables();
 
-        if (recipe.rolls() >= 0 && recipe.rolls() < tablesToRoll.size()) {
-            Collections.shuffle(tablesToRoll, new Random(serverLevel.getSeed()));
-            tablesToRoll = tablesToRoll.subList(0, recipe.rolls());
-        }
+        int rollCount = recipe.rolls() >= 0 ? recipe.rolls() : tableEntries.size();
+        Random random = new Random(serverLevel.getSeed() + level.getGameTime());
 
-        for (Identifier lootTableId : tablesToRoll) {
-            ResourceKey<LootTable> lootTableKey = ResourceKey.create(Registries.LOOT_TABLE, lootTableId);
+        for (int i = 0; i < rollCount; i++) {
+            LootRoll roll = tableEntries.get(random.nextInt(tableEntries.size()));
 
+            ResourceKey<LootTable> lootTableKey = ResourceKey.create(Registries.LOOT_TABLE, roll.table());
             LootTable lootTable = lootRegistries.getLootTable(lootTableKey);
             if (lootTable == LootTable.EMPTY) continue;
 
-            LootParams params = new LootParams.Builder(serverLevel)
-                    .create(LootContextParamSets.EMPTY);
-
+            LootParams params = buildLootParams(serverLevel, roll);
             allDrops.addAll(lootTable.getRandomItems(params, serverLevel.getRandom()));
         }
+
         try (Transaction tx = Transaction.open(null)) {
             inventory.runInternal(() -> {
                 for (ItemStack stack : allDrops) {
@@ -258,6 +264,53 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
         }
 
         sync();
+    }
+
+    private LootParams buildLootParams(ServerLevel serverLevel, LootRoll roll) {
+        Vec3 origin = Vec3.atCenterOf(getBlockPos());
+
+        return switch (roll.type()) {
+            case GENERIC -> new LootParams.Builder(serverLevel)
+                    .create(LootContextParamSets.EMPTY);
+
+            case BLOCK -> {
+                BlockState fakeState = roll.blockId()
+                        .map(BuiltInRegistries.BLOCK::getValue)
+                        .map(net.minecraft.world.level.block.Block::defaultBlockState)
+                        .orElse(Blocks.AIR.defaultBlockState());
+
+                ItemStack tool = ItemUtil.getStack(inventory, UPGRADE);
+
+                yield new LootParams.Builder(serverLevel)
+                        .withParameter(LootContextParams.ORIGIN, origin)
+                        .withParameter(LootContextParams.TOOL, tool)
+                        .withParameter(LootContextParams.BLOCK_STATE, fakeState)
+                        .create(LootContextParamSets.BLOCK);
+            }
+
+            case ENTITY -> {
+                EntityType<?> type = roll.entityId()
+                        .<EntityType<?>>map(BuiltInRegistries.ENTITY_TYPE::getValue)
+                        .orElse(EntityType.PIG);
+
+                Entity fakeEntity = type.create(serverLevel, EntitySpawnReason.EVENT);
+                if (fakeEntity != null) {
+                    fakeEntity.setPos(origin.x, origin.y, origin.z);
+                }
+
+                DamageSource damageSource = serverLevel.damageSources().generic();
+
+                LootParams.Builder builder = new LootParams.Builder(serverLevel)
+                        .withParameter(LootContextParams.ORIGIN, origin)
+                        .withParameter(LootContextParams.DAMAGE_SOURCE, damageSource);
+
+                if (fakeEntity != null) {
+                    builder.withOptionalParameter(LootContextParams.THIS_ENTITY, fakeEntity);
+                }
+
+                yield builder.create(LootContextParamSets.ENTITY);
+            }
+        };
     }
 
     public int getProgress() {

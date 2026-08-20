@@ -33,20 +33,34 @@ public class ClientEvents {
         ItemStack stack = event.getItemStack();
 
         TooltipUtil.addShiftTooltip(stack, event, SLBlocks.STRUCTURE_LOOT_BLOCK.get().asItem(), "tooltip.structureloot.structure_loot_block");
+        TooltipUtil.addShiftTooltip(stack, event, SLItems.TOKEN_CHARM.get().asItem(), "tooltip.structureloot.token_charm");
 
-        if (stack.has(SLDataComponents.STRUCTURE_ID.get())) {
-            Identifier structure = stack.get(SLDataComponents.STRUCTURE_ID.get());
+        if (stack.has(SLDataComponents.LOOT_ID.get())) {
+            Identifier lootId = stack.get(SLDataComponents.LOOT_ID.get());
 
-            assert structure != null;
-            String structureName = formatStructureName(structure);
+            assert lootId != null;
+            String lootName = formatStructureName(lootId);
+
+            TokenLabels labels = getTokenLabels(stack);
 
             if (Minecraft.getInstance().hasShiftDown()) {
-                event.getToolTip().add(Component.translatable("tooltip.structureloot.structure_token").withStyle(ChatFormatting.BLUE));
-                event.getToolTip().add(Component.translatable("tooltip.structureloot.structure", structureName).withStyle(ChatFormatting.BLUE));
-
+                event.getToolTip().add(Component.translatable(labels.headerKey()).withStyle(ChatFormatting.BLUE));
+                event.getToolTip().add(Component.translatable(labels.detailKey(), lootName).withStyle(ChatFormatting.BLUE));
             } else {
                 event.getToolTip().add(Component.translatable("tooltip.bblcore.shift").withStyle(ChatFormatting.YELLOW));
             }
+        }
+    }
+
+    private record TokenLabels(String headerKey, String detailKey) {}
+
+    private static TokenLabels getTokenLabels(ItemStack stack) {
+        if (stack.is(SLItems.BLOCK_TOKEN.get())) {
+            return new TokenLabels("tooltip.structureloot.block_token", "tooltip.structureloot.block");
+        } else if (stack.is(SLItems.ENTITY_TOKEN.get())) {
+            return new TokenLabels("tooltip.structureloot.entity_token", "tooltip.structureloot.entity");
+        } else {
+            return new TokenLabels("tooltip.structureloot.structure_token", "tooltip.structureloot.structure");
         }
     }
 

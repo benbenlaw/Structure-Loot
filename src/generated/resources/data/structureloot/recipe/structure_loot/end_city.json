@@ -1,10 +1,12 @@
 {
   "type": "structureloot:structure_loot",
   "duration": 400,
+  "loot_id": "minecraft:end_city",
   "loot_tables": [
-    "minecraft:chests/end_city_treasure"
+    {
+      "table": "minecraft:chests/end_city_treasure"
+    }
   ],
   "rf_per_tick": 600,
-  "rolls": 2,
-  "structure": "minecraft:end_city"
+  "rolls": 2
 }

@@ -1,0 +1,15 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 600,
+  "loot_id": "minecraft:glowstone",
+  "loot_tables": [
+    {
+      "type": "block",
+      "block": "minecraft:glowstone",
+      "table": "minecraft:blocks/glowstone"
+    }
+  ],
+  "max_durability": 34,
+  "rf_per_tick": 800,
+  "rolls": 1
+}

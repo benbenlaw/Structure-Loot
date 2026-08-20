@@ -1,10 +1,12 @@
 {
   "type": "structureloot:structure_loot",
   "duration": 400,
+  "loot_id": "minecraft:nether_fortress",
   "loot_tables": [
-    "minecraft:chests/nether_bridge"
+    {
+      "table": "minecraft:chests/nether_bridge"
+    }
   ],
   "rf_per_tick": 600,
-  "rolls": 2,
-  "structure": "minecraft:nether_fortress"
+  "rolls": 2
 }

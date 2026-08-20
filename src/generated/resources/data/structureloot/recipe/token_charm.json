@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "loot_generator",
+  "key": {
+    "A": "#c:gems/amethyst",
+    "B": "#c:dusts/redstone",
+    "C": "structureloot:structure_loot_block"
+  },
+  "pattern": [
+    "ABA",
+    "BCB",
+    "ABA"
+  ],
+  "result": {
+    "id": "structureloot:token_charm"
+  }
+}

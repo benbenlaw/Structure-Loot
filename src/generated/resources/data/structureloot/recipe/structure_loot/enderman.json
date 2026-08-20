@@ -1,0 +1,14 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 600,
+  "loot_id": "minecraft:enderman",
+  "loot_tables": [
+    {
+      "type": "entity",
+      "entity": "minecraft:enderman",
+      "table": "minecraft:entities/enderman"
+    }
+  ],
+  "rf_per_tick": 800,
+  "rolls": 2
+}

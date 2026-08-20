@@ -1,16 +1,31 @@
 {
   "type": "structureloot:structure_loot",
   "duration": 1000,
+  "loot_id": "minecraft:trial_chambers",
   "loot_tables": [
-    "minecraft:chests/trial_chambers/entrance",
-    "minecraft:chests/trial_chambers/corridor",
-    "minecraft:chests/trial_chambers/intersection",
-    "minecraft:chests/trial_chambers/supply",
-    "minecraft:chests/trial_chambers/reward",
-    "minecraft:chests/trial_chambers/reward_unique",
-    "minecraft:chests/trial_chambers/reward_ominous_unique"
+    {
+      "table": "minecraft:chests/trial_chambers/entrance"
+    },
+    {
+      "table": "minecraft:chests/trial_chambers/corridor"
+    },
+    {
+      "table": "minecraft:chests/trial_chambers/intersection"
+    },
+    {
+      "table": "minecraft:chests/trial_chambers/supply"
+    },
+    {
+      "table": "minecraft:chests/trial_chambers/reward"
+    },
+    {
+      "table": "minecraft:chests/trial_chambers/reward_unique"
+    },
+    {
+      "table": "minecraft:chests/trial_chambers/reward_ominous_unique"
+    }
   ],
+  "max_durability": 8,
   "rf_per_tick": 1000,
-  "rolls": 5,
-  "structure": "minecraft:trial_chambers"
+  "rolls": 5
 }

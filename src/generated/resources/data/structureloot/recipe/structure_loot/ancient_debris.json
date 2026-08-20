@@ -1,0 +1,15 @@
+{
+  "type": "structureloot:structure_loot",
+  "can_be_obtained": false,
+  "duration": 600,
+  "loot_id": "minecraft:ancient_debris",
+  "loot_tables": [
+    {
+      "type": "block",
+      "block": "minecraft:ancient_debris",
+      "table": "minecraft:blocks/ancient_debris"
+    }
+  ],
+  "rf_per_tick": 800,
+  "rolls": 1
+}

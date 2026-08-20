@@ -1,0 +1,14 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 600,
+  "loot_id": "minecraft:zombie",
+  "loot_tables": [
+    {
+      "type": "entity",
+      "entity": "minecraft:zombie",
+      "table": "minecraft:entities/zombie"
+    }
+  ],
+  "rf_per_tick": 800,
+  "rolls": 2
+}

@@ -30,9 +30,11 @@ public class SLModelProvider extends ModelProvider {
 
     @Override
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+        itemModels.generateFlatItem(SLItems.TOKEN_CHARM.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(SLItems.STRUCTURE_TOKEN.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(SLItems.BLOCK_TOKEN.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(SLItems.ENTITY_TOKEN.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(SLItems.STRUCTURE_LOOT_BLOCK.get(), ModelTemplates.FLAT_ITEM);
-
 
         createStructureLootItemModel(itemModels, SLBlocks.STRUCTURE_LOOT_BLOCK.get());
     }

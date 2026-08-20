@@ -29,6 +29,7 @@ public class DataGenerators {
         generator.addProvider(true, new SLLangProvider(packOutput));
         generator.addProvider(true, new SLModelProvider(packOutput));
         generator.addProvider(true, new SLBlockTags(packOutput, lookupProvider));
+        generator.addProvider(true, new SLItemTags(packOutput, lookupProvider));
 
         generator.addProvider(true, new LootTableProvider(packOutput, Collections.emptySet(),
                 List.of(new LootTableProvider.SubProviderEntry(SLLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));

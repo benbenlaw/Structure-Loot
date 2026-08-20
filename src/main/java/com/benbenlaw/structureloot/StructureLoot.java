@@ -5,6 +5,7 @@ import com.benbenlaw.structureloot.block.SLBlocks;
 import com.benbenlaw.structureloot.block.entity.renderer.StructureLootBlockEntityRenderer;
 import com.benbenlaw.structureloot.block.entity.renderer.StructureLootModel;
 import com.benbenlaw.structureloot.block.entity.renderer.StructureLootModelLayers;
+import com.benbenlaw.structureloot.config.SLServerConfig;
 import com.benbenlaw.structureloot.data.SLLootModifierProvider;
 import com.benbenlaw.structureloot.item.SLCreativeTab;
 import com.benbenlaw.structureloot.item.SLDataComponents;
@@ -20,6 +21,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -47,6 +49,7 @@ public class StructureLoot {
         SLCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         SLLootModifiers.LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
 
+        //modContainer.registerConfig(ModConfig.Type.SERVER, SLServerConfig.SPEC, "bbl/loot_generator/server.toml");
         modEventBus.addListener(this::networkingSetup);
     }
 

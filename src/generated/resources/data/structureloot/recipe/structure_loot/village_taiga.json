@@ -1,10 +1,12 @@
 {
   "type": "structureloot:structure_loot",
   "duration": 400,
+  "loot_id": "minecraft:village_taiga",
   "loot_tables": [
-    "minecraft:chests/village/village_taiga_house"
+    {
+      "table": "minecraft:chests/village/village_taiga_house"
+    }
   ],
   "rf_per_tick": 600,
-  "rolls": 2,
-  "structure": "minecraft:village_taiga"
+  "rolls": 2
 }

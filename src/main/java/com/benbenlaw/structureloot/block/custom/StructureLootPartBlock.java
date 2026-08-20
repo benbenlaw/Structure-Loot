@@ -2,13 +2,16 @@ package com.benbenlaw.structureloot.block.custom;
 
 import com.benbenlaw.structureloot.block.entity.StructureLootBlockEntity;
 import com.benbenlaw.structureloot.block.entity.StructureLootPartBlockEntity;
+import com.benbenlaw.structureloot.item.SLItems;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -48,6 +51,11 @@ public class StructureLootPartBlock extends BaseEntityBlock {
             }
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
+        return new ItemStack(SLItems.STRUCTURE_LOOT_BLOCK.get());
     }
 
     @Override

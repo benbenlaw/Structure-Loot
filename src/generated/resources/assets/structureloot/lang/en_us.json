@@ -1,10 +1,18 @@
 {
-  "block.structureloot.structure_loot_block": "Structure Loot Generator",
-  "block.structureloot.structure_loot_part": "Structure Loot Generator",
+  "block.structureloot.structure_loot_block": "Loot Generator",
+  "block.structureloot.structure_loot_part": "Loot Generator",
+  "item.structureloot.block_token": "Block Token",
+  "item.structureloot.entity_token": "Entity Token",
   "item.structureloot.structure_loot_block": "Structure Loot Generator",
   "item.structureloot.structure_token": "Structure Token",
-  "itemGroup.structureloot": "Structure Loot",
+  "item.structureloot.token_charm": "Token Charm",
+  "itemGroup.structureloot": "BBL Loot Generators",
+  "tooltip.structureloot.block": "Block: %s",
+  "tooltip.structureloot.block_token": "Used inside the Loot Generator to create loot!",
+  "tooltip.structureloot.entity": "Entity: %s",
+  "tooltip.structureloot.entity_token": "Used inside the Loot Generator to create loot!",
   "tooltip.structureloot.structure": "Structure: %s",
-  "tooltip.structureloot.structure_loot_block": "Places a 3x3x3 block that creates loot from structures using Structure Tokens and RF",
-  "tooltip.structureloot.structure_token": "Used inside the Structure Loot Generator to create loot!"
+  "tooltip.structureloot.structure_loot_block": "Places a 3x3x3 block that creates loot using Tokens and RF",
+  "tooltip.structureloot.structure_token": "Used inside the Loot Generator to create loot!",
+  "tooltip.structureloot.token_charm": "When in inventory, valid blocks and entities have a chance to drop a Token"
 }

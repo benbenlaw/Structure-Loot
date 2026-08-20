@@ -1,12 +1,18 @@
 {
   "type": "structureloot:structure_loot",
   "duration": 1000,
+  "loot_id": "minecraft:shipwreck",
   "loot_tables": [
-    "minecraft:chests/shipwreck_supply",
-    "minecraft:chests/shipwreck_treasure",
-    "minecraft:chests/shipwreck_map"
+    {
+      "table": "minecraft:chests/shipwreck_supply"
+    },
+    {
+      "table": "minecraft:chests/shipwreck_treasure"
+    },
+    {
+      "table": "minecraft:chests/shipwreck_map"
+    }
   ],
   "rf_per_tick": 1000,
-  "rolls": 1,
-  "structure": "minecraft:shipwreck"
+  "rolls": 1
 }

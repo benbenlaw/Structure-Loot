@@ -1,10 +1,12 @@
 {
   "type": "structureloot:structure_loot",
   "duration": 400,
+  "loot_id": "minecraft:jungle_temple",
   "loot_tables": [
-    "minecraft:chests/jungle_temple"
+    {
+      "table": "minecraft:chests/jungle_temple"
+    }
   ],
   "rf_per_tick": 600,
-  "rolls": 2,
-  "structure": "minecraft:jungle_temple"
+  "rolls": 2
 }
