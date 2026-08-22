@@ -34,21 +34,10 @@ public class SLCreativeTab {
 
                             .displayItems((parameters, output) -> {
                                 output.accept(SLBlocks.STRUCTURE_LOOT_BLOCK.get());
-
-                                ClientRecipeCache.getCachedStructureLootRecipes().forEach(recipe -> {
-                                    EnumSet<StructureLootRecipe.LootContextType> typesPresent =
-                                            recipe.lootTables().stream()
-                                                    .map(StructureLootRecipe.LootRoll::type)
-                                                    .collect(Collectors.toCollection(() ->
-                                                            EnumSet.noneOf(StructureLootRecipe.LootContextType.class)));
-
-                                    typesPresent.forEach(type -> {
-                                        ItemStack token = new ItemStack(itemForType(type));
-                                        token.set(SLDataComponents.LOOT_ID.get(), recipe.lootId());
-                                        token.set(DataComponents.MAX_DAMAGE, recipe.maxDurability());
-                                        output.accept(token);
-                                    });
-                                });
+                                var recipes = ClientRecipeCache.getCachedStructureLootRecipes();
+                                addTokensForType(recipes, StructureLootRecipe.LootContextType.GENERIC, output);
+                                addTokensForType(recipes, StructureLootRecipe.LootContextType.BLOCK, output);
+                                addTokensForType(recipes, StructureLootRecipe.LootContextType.ENTITY, output);
                             })
                             .build());
 
@@ -60,6 +49,22 @@ public class SLCreativeTab {
         };
     }
 
+    private static void addTokensForType(
+            Iterable<StructureLootRecipe> recipes,
+            StructureLootRecipe.LootContextType type,
+            CreativeModeTab.Output output) {
 
+        for (StructureLootRecipe recipe : recipes) {
+            boolean hasType = recipe.lootTables().stream()
+                    .anyMatch(roll -> roll.type() == type);
+
+            if (hasType) {
+                ItemStack token = new ItemStack(itemForType(type));
+                token.set(SLDataComponents.LOOT_ID.get(), recipe.lootId());
+                token.set(DataComponents.MAX_DAMAGE, recipe.maxDurability());
+                output.accept(token);
+            }
+        }
+    }
 
 }
