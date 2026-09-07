@@ -1,8 +1,0 @@
-{
-  "type": "structureloot:structure_loot",
-  "structure": "minecraft:mineshaft",
-  "loot_tables": [
-    "minecraft:chests/simple_dungeon",
-    "minecraft:chests/end_city_treasure"
-  ]
-}
