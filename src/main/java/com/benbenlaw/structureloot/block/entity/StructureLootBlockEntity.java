@@ -15,9 +15,12 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.ReloadableServerRegistries;
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -36,6 +39,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -69,6 +73,17 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
     private final SyncableItemHandler inventory = new SyncableItemHandler(this, 102, (slot, stack) -> true, i -> i >= 2);
     private final EnergyHandler energyHandler = new EnergyHandler(1000000, 100000, this);
 
+    private Identifier cachedLootId;
+    private RecipeHolder<StructureLootRecipe> cachedRecipe;
+
+    private boolean outputFullCache = false;
+    private boolean outputCacheValid = false;
+
+    private static final int SYNC_INTERVAL_TICKS = 5;
+    private int syncCooldown = 0;
+
+    private boolean suppressSync = false;
+
     public StructureLootBlockEntity(BlockPos pos, BlockState state) {
         super(SLBlockEntities.STRUCTURE_LOOT_BLOCK_ENTITY.get(), pos, state);
 
@@ -87,8 +102,6 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
                 switch (index) {
                     case 0 -> progress = value;
                     case 1 -> maxProgress = value;
-                    case 2 -> energyHandler.getAmountAsInt();
-                    case 3 -> energyHandler.getCapacityAsInt();
                 }
             }
 
@@ -106,7 +119,9 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
         }
 
         ItemStack structureToken = ItemUtil.getStack(inventory, STRUCTURE_SETTER);
-        fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, structureToken);
+        if (!ItemStack.matches(fakePlayer.getItemInHand(InteractionHand.MAIN_HAND), structureToken)) {
+            fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, structureToken);
+        }
 
         RecipeHolder<StructureLootRecipe> recipeHolder = getRecipe();
         boolean changed = false;
@@ -135,7 +150,10 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
 
         if (changed) {
             setChanged();
-            sync();
+            if (--syncCooldown <= 0) {
+                sync();
+                syncCooldown = SYNC_INTERVAL_TICKS;
+            }
         }
     }
 
@@ -151,12 +169,42 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
     }
 
     private boolean hasOutputSpace() {
+        if (outputCacheValid) {
+            return !outputFullCache;
+        }
+
+        boolean hasSpace = false;
         for (int slot = FIRST_OUTPUT_SLOT; slot <= LAST_OUTPUT_SLOT; slot++) {
             if (ItemUtil.getStack(inventory, slot).isEmpty()) {
-                return true;
+                hasSpace = true;
+                break;
             }
         }
-        return false;
+
+        outputFullCache = !hasSpace;
+        outputCacheValid = true;
+        return hasSpace;
+    }
+
+    private void invalidateOutputCache() {
+        outputCacheValid = false;
+    }
+
+    @Override
+    public void sync() {
+        if (suppressSync) return;
+        if (!(this.level instanceof ServerLevel serverLevel)) return;
+
+        LevelChunk chunk = serverLevel.getChunkAt(this.getBlockPos());
+        if (chunk.getLevel() == null) return;
+
+        if (chunk.getLevel().getChunkSource() instanceof ServerChunkCache chunkCache) {
+            Packet<ClientGamePacketListener> packet = this.getUpdatePacket();
+            if (packet != null) {
+                chunkCache.chunkMap.getPlayers(chunk.getPos(), false)
+                        .forEach(player -> player.connection.send(packet));
+            }
+        }
     }
 
     private void spawnLootParticle(ServerLevel serverLevel) {
@@ -202,12 +250,21 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
         if (level == null || level.getServer() == null) return null;
 
         ItemStack structureStack = ItemUtil.getStack(inventory, STRUCTURE_SETTER);
-        if (structureStack.isEmpty()) return null;
+        if (structureStack.isEmpty()) {
+            cachedLootId = null;
+            cachedRecipe = null;
+            return null;
+        }
 
         Identifier structureId = structureStack.get(SLDataComponents.LOOT_ID.get());
         if (structureId == null) return null;
 
-        return level.getServer().getRecipeManager()
+        if (structureId.equals(cachedLootId) && cachedRecipe != null) {
+            return cachedRecipe;
+        }
+
+        cachedLootId = structureId;
+        cachedRecipe = level.getServer().getRecipeManager()
                 .recipeMap()
                 .values()
                 .stream()
@@ -216,6 +273,8 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
                 .filter(holder -> holder.value().lootId().equals(structureId))
                 .findFirst()
                 .orElse(null);
+
+        return cachedRecipe;
     }
 
     private void executeLootRoll(StructureLootRecipe recipe, ItemStack structureToken) {
@@ -239,6 +298,7 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
             allDrops.addAll(lootTable.getRandomItems(params, serverLevel.getRandom()));
         }
 
+        suppressSync = true;
         try (Transaction tx = Transaction.open(null)) {
             inventory.runInternal(() -> {
                 for (ItemStack stack : allDrops) {
@@ -261,9 +321,14 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
 
             });
             tx.commit();
+        } finally {
+            suppressSync = false;
         }
 
+        invalidateOutputCache();
+
         sync();
+        syncCooldown = SYNC_INTERVAL_TICKS;
     }
 
     private LootParams buildLootParams(ServerLevel serverLevel, LootRoll roll) {
@@ -337,6 +402,7 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
         progress = input.getIntOr("progress", 0);
         maxProgress = input.getIntOr("maxProgress", 200);
         super.loadAdditional(input);
+        invalidateOutputCache();
     }
 
     public ItemStacksResourceHandler getItemHandler() {

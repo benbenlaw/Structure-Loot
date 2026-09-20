@@ -82,6 +82,10 @@ dependencies {
     runtimeOnly("curse.maven:ender-io-64578:8004141")
     //Curios
     implementation("curse.maven:curios-309927:8463519")
+    //Observable
+    runtimeOnly("curse.maven:observable-remake-1639360:8589511")
+    //Observable
+    runtimeOnly("curse.maven:spark-361579:8918574")
 
 
 }

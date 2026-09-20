@@ -13,7 +13,7 @@ public class EnergyHandler extends SimpleEnergyHandler {
 
     @Override
     protected void onEnergyChanged(int previousAmount) {
-        blockEntity.sync();
+        blockEntity.setChanged();
         super.onEnergyChanged(previousAmount);
     }
 }
