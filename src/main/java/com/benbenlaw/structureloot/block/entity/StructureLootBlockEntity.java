@@ -5,7 +5,9 @@ import com.benbenlaw.core.block.entity.handler.item.SyncableItemHandler;
 import com.benbenlaw.core.util.FakePlayerUtil;
 import com.benbenlaw.structureloot.block.SLBlockEntities;
 import com.benbenlaw.structureloot.block.SLBlocks;
+import com.benbenlaw.structureloot.data.SLItemTags;
 import com.benbenlaw.structureloot.item.SLDataComponents;
+import com.benbenlaw.structureloot.item.SLItems;
 import com.benbenlaw.structureloot.recipe.StructureLootRecipe;
 import com.benbenlaw.structureloot.recipe.StructureLootRecipe.LootRoll;
 import com.benbenlaw.structureloot.screen.custom.StructureLootMenu;
@@ -70,7 +72,12 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
     public static final int LAST_OUTPUT_SLOT = 101;
     private FakePlayer fakePlayer;
 
-    private final SyncableItemHandler inventory = new SyncableItemHandler(this, 102, (slot, stack) -> true, i -> i >= 2);
+    private final SyncableItemHandler inventory = new SyncableItemHandler(this, 102,
+            (slot, stack) -> slot == 0
+                    ? (stack.is(SLItems.BLOCK_TOKEN) || stack.is(SLItems.ENTITY_TOKEN) || stack.is(SLItems.STRUCTURE_TOKEN))
+                    : slot == 1 && !(stack.is(SLItems.BLOCK_TOKEN) || stack.is(SLItems.ENTITY_TOKEN) || stack.is(SLItems.STRUCTURE_TOKEN)),
+            i -> i >= FIRST_OUTPUT_SLOT);
+    
     private final EnergyHandler energyHandler = new EnergyHandler(1000000, 100000, this);
 
     private Identifier cachedLootId;

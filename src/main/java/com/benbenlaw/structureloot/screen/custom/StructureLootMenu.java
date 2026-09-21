@@ -33,7 +33,7 @@ public class StructureLootMenu extends SimpleAbstractContainerMenu {
     }
 
     public StructureLootMenu(int containerID, Inventory inventory, BlockPos blockPos, ContainerData data) {
-        super(SLMenuTypes.STRUCTURE_LOOT_MENU.get(), containerID, inventory, blockPos, 17);
+        super(SLMenuTypes.STRUCTURE_LOOT_MENU.get(), containerID, inventory, blockPos, 102);
 
         this.player = inventory.player;
         this.blockPos = blockPos;
@@ -42,7 +42,6 @@ public class StructureLootMenu extends SimpleAbstractContainerMenu {
         this.data = data;
 
         assert blockEntity != null;
-
 
         this.addSlot(new InputSlot(blockEntity.getItemHandler(), blockEntity.getItemHandler()::set, 0, 35, 17) {
 
@@ -56,7 +55,7 @@ public class StructureLootMenu extends SimpleAbstractContainerMenu {
             int col = i % COLUMNS;
             int row = i / COLUMNS;
 
-            this.addSlot(new ScrollableResultSlot(this, i + 1, 62 + col * 18, 17 + row * 18));
+            this.addSlot(new ScrollableResultSlot(this, i, 62 + col * 18, 17 + row * 18));
         }
 
         addDataSlots(data);
