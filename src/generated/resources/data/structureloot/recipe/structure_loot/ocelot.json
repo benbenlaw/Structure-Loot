@@ -1,0 +1,14 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 300,
+  "loot_id": "minecraft:ocelot",
+  "loot_tables": [
+    {
+      "type": "entity",
+      "entity": "minecraft:ocelot",
+      "table": "minecraft:entities/ocelot"
+    }
+  ],
+  "rf_per_tick": 1000,
+  "rolls": 1
+}

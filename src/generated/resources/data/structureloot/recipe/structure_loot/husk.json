@@ -1,0 +1,14 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 300,
+  "loot_id": "minecraft:husk",
+  "loot_tables": [
+    {
+      "type": "entity",
+      "entity": "minecraft:husk",
+      "table": "minecraft:entities/husk"
+    }
+  ],
+  "rf_per_tick": 1000,
+  "rolls": 1
+}

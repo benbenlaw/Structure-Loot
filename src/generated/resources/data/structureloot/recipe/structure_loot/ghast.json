@@ -1,0 +1,14 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 300,
+  "loot_id": "minecraft:ghast",
+  "loot_tables": [
+    {
+      "type": "entity",
+      "entity": "minecraft:ghast",
+      "table": "minecraft:entities/ghast"
+    }
+  ],
+  "rf_per_tick": 1000,
+  "rolls": 1
+}

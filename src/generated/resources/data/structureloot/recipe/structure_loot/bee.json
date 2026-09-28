@@ -1,0 +1,14 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 300,
+  "loot_id": "minecraft:bee",
+  "loot_tables": [
+    {
+      "type": "entity",
+      "entity": "minecraft:bee",
+      "table": "minecraft:entities/bee"
+    }
+  ],
+  "rf_per_tick": 1000,
+  "rolls": 1
+}

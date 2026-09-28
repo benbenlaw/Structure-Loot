@@ -1,10 +1,10 @@
 {
   "block.structureloot.structure_loot_block": "Loot Generator",
   "block.structureloot.structure_loot_part": "Loot Generator",
-  "item.structureloot.block_token": "Block Token",
-  "item.structureloot.entity_token": "Entity Token",
+  "item.structureloot.block_token": "Block Token: %s",
+  "item.structureloot.entity_token": "Entity Token: %s",
   "item.structureloot.structure_loot_block": "Structure Loot Generator",
-  "item.structureloot.structure_token": "Structure Token",
+  "item.structureloot.structure_token": "Structure Token: %s",
   "item.structureloot.token_charm": "Token Charm",
   "itemGroup.structureloot": "BBL Loot Generators",
   "tooltip.structureloot.block": "Block: %s",

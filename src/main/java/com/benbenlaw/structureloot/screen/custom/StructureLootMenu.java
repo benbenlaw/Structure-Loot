@@ -3,6 +3,7 @@ package com.benbenlaw.structureloot.screen.custom;
 import com.benbenlaw.core.screen.SimpleAbstractContainerMenu;
 import com.benbenlaw.core.screen.util.slot.InputSlot;
 import com.benbenlaw.structureloot.block.entity.StructureLootBlockEntity;
+import com.benbenlaw.structureloot.item.SLItems;
 import com.benbenlaw.structureloot.screen.SLMenuTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -103,7 +104,18 @@ public class StructureLootMenu extends SimpleAbstractContainerMenu {
         int resultEnd = 38 + VISIBLE_SLOTS;
 
         if (pIndex < 36) {
-            if (!this.moveItemStackTo(sourceStack, inputStart, inputEnd, false)) {
+            boolean isToken = sourceStack.is(SLItems.BLOCK_TOKEN)
+                    || sourceStack.is(SLItems.ENTITY_TOKEN)
+                    || sourceStack.is(SLItems.STRUCTURE_TOKEN);
+
+            // token -> slot 36, upgrade -> slot 37
+            int targetIndex = isToken ? inputStart : inputStart + 1;
+            Slot target = this.slots.get(targetIndex);
+
+            if (target.hasItem() || !target.mayPlace(sourceStack)) {
+                return ItemStack.EMPTY;
+            }
+            if (!this.moveItemStackTo(sourceStack, targetIndex, targetIndex + 1, false)) {
                 return ItemStack.EMPTY;
             }
         } else if (pIndex < inputEnd) {
@@ -115,6 +127,10 @@ public class StructureLootMenu extends SimpleAbstractContainerMenu {
                 return ItemStack.EMPTY;
             }
         } else {
+            return ItemStack.EMPTY;
+        }
+
+        if (sourceStack.getCount() == copyOfSourceStack.getCount()) {
             return ItemStack.EMPTY;
         }
 

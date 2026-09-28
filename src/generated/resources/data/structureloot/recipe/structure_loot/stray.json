@@ -1,0 +1,14 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 300,
+  "loot_id": "minecraft:stray",
+  "loot_tables": [
+    {
+      "type": "entity",
+      "entity": "minecraft:stray",
+      "table": "minecraft:entities/stray"
+    }
+  ],
+  "rf_per_tick": 1000,
+  "rolls": 1
+}

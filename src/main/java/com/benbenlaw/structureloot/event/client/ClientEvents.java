@@ -52,7 +52,7 @@ public class ClientEvents {
         }
     }
 
-    private record TokenLabels(String headerKey, String detailKey) {}
+    public record TokenLabels(String headerKey, String detailKey) {}
 
     private static TokenLabels getTokenLabels(ItemStack stack) {
         if (stack.is(SLItems.BLOCK_TOKEN.get())) {

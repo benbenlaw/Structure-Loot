@@ -18,9 +18,9 @@ public class SLLangProvider extends LanguageProvider {
 
         //Items
         add("item.structureloot.token_charm", "Token Charm");
-        add("item.structureloot.structure_token", "Structure Token");
-        add("item.structureloot.block_token", "Block Token");
-        add("item.structureloot.entity_token", "Entity Token");
+        add("item.structureloot.structure_token", "Structure Token: %s");
+        add("item.structureloot.block_token", "Block Token: %s");
+        add("item.structureloot.entity_token", "Entity Token: %s");
         add("item.structureloot.structure_loot_block", "Structure Loot Generator");
 
         //Blocks

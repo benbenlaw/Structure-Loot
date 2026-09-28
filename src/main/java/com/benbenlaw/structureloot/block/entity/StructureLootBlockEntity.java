@@ -374,7 +374,11 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
 
                 LootParams.Builder builder = new LootParams.Builder(serverLevel)
                         .withParameter(LootContextParams.ORIGIN, origin)
-                        .withParameter(LootContextParams.DAMAGE_SOURCE, damageSource);
+                        .withParameter(LootContextParams.DAMAGE_SOURCE, damageSource)
+                        .withParameter(LootContextParams.LAST_DAMAGE_PLAYER, fakePlayer)
+                        .withOptionalParameter(LootContextParams.ATTACKING_ENTITY, fakeEntity)
+                        .withOptionalParameter(LootContextParams.DIRECT_ATTACKING_ENTITY, fakeEntity)
+                        .withLuck(fakePlayer.getLuck());
 
                 if (fakeEntity != null) {
                     builder.withOptionalParameter(LootContextParams.THIS_ENTITY, fakeEntity);

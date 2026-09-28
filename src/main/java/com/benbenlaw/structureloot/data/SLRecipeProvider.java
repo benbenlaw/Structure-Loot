@@ -187,15 +187,53 @@ public class SLRecipeProvider extends RecipeProvider {
         );
 
         //Entities
-        entityLootRecipe("zombie", 2, 600, 800,
-                "entities/zombie",
-                "minecraft:zombie"
-        );
-
-        entityLootRecipe("enderman", 2, 600, 800,
-                "entities/enderman",
-                "minecraft:enderman"
-        );
+        entityLootRecipe("zombie", 1, 300, 600, "entities/zombie", "minecraft:zombie");
+        entityLootRecipe("enderman", 1, 300, 1000, "entities/enderman", "minecraft:enderman");
+        entityLootRecipe("shulker", 1, 300, 1000, "entities/shulker", "minecraft:shulker");
+        entityLootRecipe("skeleton", 1, 300, 600, "entities/skeleton", "minecraft:skeleton");
+        entityLootRecipe("creeper", 1, 300, 1000, "entities/creeper", "minecraft:creeper");
+        entityLootRecipe("spider", 1, 300, 600, "entities/spider", "minecraft:spider");
+        entityLootRecipe("witch", 1, 300, 1000, "entities/witch", "minecraft:witch");
+        entityLootRecipe("blaze", 1, 300, 1000, "entities/blaze", "minecraft:blaze");
+        entityLootRecipe("breeze", 1, 300, 1000, "entities/breeze", "minecraft:breeze");
+        entityLootRecipe("husk", 1, 300, 1000, "entities/husk", "minecraft:husk");
+        entityLootRecipe("stray", 1, 300, 1000, "entities/stray", "minecraft:stray");
+        entityLootRecipe("vindicator", 1, 300, 1000, "entities/vindicator", "minecraft:vindicator");
+        entityLootRecipe("wither_skeleton", 1, 300, 1400, "entities/wither_skeleton", "minecraft:wither_skeleton");
+        entityLootRecipe("zoglin", 1, 300, 1000, "entities/zoglin", "minecraft:zoglin");
+        entityLootRecipe("piglin", 1, 300, 1000, "entities/piglin", "minecraft:piglin");
+        entityLootRecipe("piglin_brute", 1, 300, 1000, "entities/piglin_brute", "minecraft:piglin_brute");
+        entityLootRecipe("ravager", 1, 300, 1000, "entities/ravager", "minecraft:ravager");
+        entityLootRecipe("vex", 1, 300, 1000, "entities/vex", "minecraft:vex");
+        entityLootRecipe("pillager", 1, 300, 1000, "entities/pillager", "minecraft:pillager");
+        entityLootRecipe("magma_cube", 1, 300, 1000, "entities/magma_cube", "minecraft:magma_cube");
+        entityLootRecipe("ghast", 1, 300, 1000, "entities/ghast", "minecraft:ghast");
+        entityLootRecipe("slime", 1, 300, 1000, "entities/slime", "minecraft:slime");
+        entityLootRecipe("guardian", 1, 300, 1000, "entities/guardian", "minecraft:guardian");
+        entityLootRecipe("bee", 1, 300, 600, "entities/bee", "minecraft:bee");
+        entityLootRecipe("fox", 1, 300, 600, "entities/fox", "minecraft:fox");
+        entityLootRecipe("wolf", 1, 300, 600, "entities/wolf", "minecraft:wolf");
+        entityLootRecipe("cat", 1, 300, 600, "entities/cat", "minecraft:cat");
+        entityLootRecipe("polar_bear", 1, 300, 600, "entities/polar_bear", "minecraft:polar_bear");
+        entityLootRecipe("turtle", 1, 300, 600, "entities/turtle", "minecraft:turtle");
+        entityLootRecipe("dolphin", 1, 300, 1000, "entities/dolphin", "minecraft:dolphin");
+        entityLootRecipe("ocelot", 1, 300, 1000, "entities/ocelot", "minecraft:ocelot");
+        entityLootRecipe("llama", 1, 300, 1000, "entities/llama", "minecraft:llama");
+        entityLootRecipe("parrot", 1, 300, 600, "entities/parrot", "minecraft:parrot");
+        entityLootRecipe("bat", 1, 300, 600, "entities/bat", "minecraft:bat");
+        entityLootRecipe("horse", 1, 300, 600, "entities/horse", "minecraft:horse");
+        entityLootRecipe("donkey", 1, 300, 600, "entities/donkey", "minecraft:donkey");
+        entityLootRecipe("mule", 1, 300, 600, "entities/mule", "minecraft:mule");
+        entityLootRecipe("skeleton_horse", 1, 300, 1000, "entities/skeleton_horse", "minecraft:skeleton_horse");
+        entityLootRecipe("zombie_horse", 1, 300, 1000, "entities/zombie_horse", "minecraft:zombie_horse");
+        entityLootRecipe("pig", 1, 300, 600, "entities/pig", "minecraft:pig");
+        entityLootRecipe("sheep", 1, 300, 600, "entities/sheep", "minecraft:sheep");
+        entityLootRecipe("cow", 1, 300, 600, "entities/cow", "minecraft:cow");
+        entityLootRecipe("chicken", 1, 300, 600, "entities/chicken", "minecraft:chicken");
+        entityLootRecipe("squid", 1, 300, 600, "entities/squid", "minecraft:squid");
+        entityLootRecipe("glow_squid", 1, 300, 600, "entities/glow_squid", "minecraft:glow_squid");
+        entityLootRecipe("endermite", 1, 300, 1000, "entities/endermite", "minecraft:endermite");
+        entityLootRecipe("mooshroom", 1, 300, 1000, "entities/mooshroom", "minecraft:mooshroom");
     }
 
     public void simpleLootRecipe(String lootId, String... lootTable) {

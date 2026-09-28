@@ -1,0 +1,14 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 300,
+  "loot_id": "minecraft:piglin_brute",
+  "loot_tables": [
+    {
+      "type": "entity",
+      "entity": "minecraft:piglin_brute",
+      "table": "minecraft:entities/piglin_brute"
+    }
+  ],
+  "rf_per_tick": 1000,
+  "rolls": 1
+}
