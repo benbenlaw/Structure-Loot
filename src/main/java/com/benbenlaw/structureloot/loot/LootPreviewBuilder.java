@@ -186,7 +186,12 @@ public class LootPreviewBuilder {
 
             String modifierType = path(json.get("type"));
             boolean tokenModifier = modifierType.equals("structure_loot_token");
-            if (!tokenModifier && (!modifierType.equals("add_table") || !json.has("table"))) continue;
+            String tableField = json.has("table") ? "table" : json.has("loot_table") ? "loot_table" : null;
+            boolean addsTable = tableField != null && (modifierType.equals("add_table") || modifierType.contains("inject"));
+            if (!tokenModifier && !addsTable) continue;
+
+            if (json.has("loot_table_to_inject_into")
+                    && !json.get("loot_table_to_inject_into").getAsString().equals(tableId.toString())) continue;
 
             List<Component> notes = new ArrayList<>();
             boolean applies = true;
@@ -211,7 +216,7 @@ public class LootPreviewBuilder {
                 continue;
             }
 
-            Identifier addedId = Identifier.tryParse(json.get("table").getAsString());
+            Identifier addedId = Identifier.tryParse(json.get(tableField).getAsString());
             JsonObject added = addedId == null ? null : tableJson(addedId);
             if (added == null) continue;
 
@@ -714,6 +719,8 @@ public class LootPreviewBuilder {
 
     private Component describeCondition(JsonObject c) {
         String type = path(c.get("condition"));
+        if (type.endsWith("_enabled")) return null;
+
         switch (type) {
             case "survives_explosion" -> {
                 return null;
