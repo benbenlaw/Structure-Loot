@@ -19,7 +19,7 @@ import java.util.Optional;
 
 public record StructureLootRecipe(Identifier lootId, List<StructureLootRecipe.LootRoll> lootTables,
                                   int rolls, int duration, int rfPerTick, int maxDurability,
-                                  boolean canBeObtained) implements Recipe<NoInventoryRecipe> {
+                                  double obtainedChance) implements Recipe<NoInventoryRecipe> {
 
     public static final MapCodec<StructureLootRecipe> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
@@ -29,7 +29,7 @@ public record StructureLootRecipe(Identifier lootId, List<StructureLootRecipe.Lo
                     Codec.INT.fieldOf("duration").forGetter(StructureLootRecipe::duration),
                     Codec.INT.fieldOf("rf_per_tick").forGetter(StructureLootRecipe::rfPerTick),
                     Codec.INT.optionalFieldOf("max_durability", 10).forGetter(StructureLootRecipe::maxDurability),
-                    Codec.BOOL.optionalFieldOf("can_be_obtained", true).forGetter(StructureLootRecipe::canBeObtained)
+                    Codec.DOUBLE.optionalFieldOf("obtained_chance", 0.0).forGetter(StructureLootRecipe::obtainedChance)
             ).apply(instance, StructureLootRecipe::new)
     );
 
@@ -48,8 +48,8 @@ public record StructureLootRecipe(Identifier lootId, List<StructureLootRecipe.Lo
         int duration = buffer.readInt();
         int rfPerTick = buffer.readInt();
         int maxDurability = buffer.readInt();
-        boolean canBeObtained = buffer.readBoolean();
-        return new StructureLootRecipe(lootId, lootTables, rolls, duration, rfPerTick, maxDurability, canBeObtained);
+        double obtainedChance = buffer.readDouble();
+        return new StructureLootRecipe(lootId, lootTables, rolls, duration, rfPerTick, maxDurability, obtainedChance);
     }
 
     private static void write(RegistryFriendlyByteBuf buffer, StructureLootRecipe recipe) {
@@ -59,7 +59,7 @@ public record StructureLootRecipe(Identifier lootId, List<StructureLootRecipe.Lo
         buffer.writeInt(recipe.duration);
         buffer.writeInt(recipe.rfPerTick);
         buffer.writeInt(recipe.maxDurability);
-        buffer.writeBoolean(recipe.canBeObtained);
+        buffer.writeDouble(recipe.obtainedChance);
     }
 
     @Override

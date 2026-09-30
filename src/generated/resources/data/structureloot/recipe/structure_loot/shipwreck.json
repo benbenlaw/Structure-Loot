@@ -13,6 +13,7 @@
       "table": "minecraft:chests/shipwreck_map"
     }
   ],
+  "obtained_chance": 0.1,
   "rf_per_tick": 1000,
   "rolls": 1
 }

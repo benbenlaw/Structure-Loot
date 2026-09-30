@@ -1,6 +1,5 @@
 {
   "type": "structureloot:structure_loot",
-  "can_be_obtained": false,
   "duration": 600,
   "loot_id": "minecraft:ancient_debris",
   "loot_tables": [

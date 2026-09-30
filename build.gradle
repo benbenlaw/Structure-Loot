@@ -87,7 +87,6 @@ dependencies {
     //Observable
     runtimeOnly("curse.maven:spark-361579:8918574")
 
-
 }
 
 tasks.withType(ProcessResources).configureEach {

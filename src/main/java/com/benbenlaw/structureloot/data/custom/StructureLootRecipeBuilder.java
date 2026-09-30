@@ -23,6 +23,9 @@ import java.util.Map;
 
 public class StructureLootRecipeBuilder implements RecipeBuilder {
 
+    public static final double DEFAULT_OBTAINED_CHANCE = 0.1;
+    public static final double BLOCK_OBTAINED_CHANCE = 0.01;
+
     protected String group;
     protected Identifier lootId;
     protected List<LootRoll> lootTables;
@@ -30,29 +33,29 @@ public class StructureLootRecipeBuilder implements RecipeBuilder {
     protected int duration;
     protected int rfPerTick;
     protected int maxDurability;
-    protected boolean canBeObtained;
+    protected double obtainedChance;
     protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-    public StructureLootRecipeBuilder(Identifier lootId, List<LootRoll> lootTables, int rolls, int duration, int rfPerTick, int maxDurability, boolean canBeObtained) {
+    public StructureLootRecipeBuilder(Identifier lootId, List<LootRoll> lootTables, int rolls, int duration, int rfPerTick, int maxDurability, double obtainedChance) {
         this.lootId = lootId;
         this.lootTables = lootTables;
         this.rolls = rolls;
         this.duration = duration;
         this.rfPerTick = rfPerTick;
         this.maxDurability = maxDurability;
-        this.canBeObtained = canBeObtained;
+        this.obtainedChance = obtainedChance;
     }
 
-    public static StructureLootRecipeBuilder structureLootRecipe(Identifier lootId, List<LootRoll> lootTables, int rolls, int duration, int rfPerTick, int maxDurability, boolean canBeObtained) {
-        return new StructureLootRecipeBuilder(lootId, lootTables, rolls, duration, rfPerTick, maxDurability, canBeObtained);
+    public static StructureLootRecipeBuilder structureLootRecipe(Identifier lootId, List<LootRoll> lootTables, int rolls, int duration, int rfPerTick, int maxDurability, double obtainedChance) {
+        return new StructureLootRecipeBuilder(lootId, lootTables, rolls, duration, rfPerTick, maxDurability, obtainedChance);
     }
 
     public static StructureLootRecipeBuilder structureLootRecipe(Identifier lootId, List<LootRoll> lootTables, int rolls, int duration, int rfPerTick, int maxDurability) {
-        return structureLootRecipe(lootId, lootTables, rolls, duration, rfPerTick, maxDurability, true);
+        return structureLootRecipe(lootId, lootTables, rolls, duration, rfPerTick, maxDurability, DEFAULT_OBTAINED_CHANCE);
     }
 
     public static StructureLootRecipeBuilder structureLootRecipe(Identifier lootId, List<LootRoll> lootTables, int rolls, int duration, int rfPerTick) {
-        return structureLootRecipe(lootId, lootTables, rolls, duration, rfPerTick, 10, true);
+        return structureLootRecipe(lootId, lootTables, rolls, duration, rfPerTick, 10, DEFAULT_OBTAINED_CHANCE);
     }
 
     @Override
@@ -88,7 +91,7 @@ public class StructureLootRecipeBuilder implements RecipeBuilder {
                 .rewards(AdvancementRewards.Builder.recipe(resourceKey))
                 .requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(builder::addCriterion);
-        StructureLootRecipe structureLootRecipe = new StructureLootRecipe(this.lootId, this.lootTables, this.rolls, this.duration, this.rfPerTick, this.maxDurability, this.canBeObtained);
+        StructureLootRecipe structureLootRecipe = new StructureLootRecipe(this.lootId, this.lootTables, this.rolls, this.duration, this.rfPerTick, this.maxDurability, this.obtainedChance);
         recipeOutput.accept(resourceKey, structureLootRecipe, builder.build(resourceKey.identifier().withPrefix("recipes/structures/")));
     }
 }

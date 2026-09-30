@@ -1,10 +1,10 @@
 package com.benbenlaw.structureloot.loot;
 
+import com.benbenlaw.structureloot.config.SLServerConfig;
 import com.benbenlaw.structureloot.item.SLDataComponents;
 import com.benbenlaw.structureloot.item.SLItems;
 import com.benbenlaw.structureloot.recipe.StructureLootRecipe;
 import com.benbenlaw.structureloot.util.CharmUtil;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -24,15 +24,10 @@ import net.neoforged.neoforge.common.loot.LootModifier;
 public class StructureLootTokenModifier extends LootModifier {
 
     public static final MapCodec<StructureLootTokenModifier> CODEC = RecordCodecBuilder.mapCodec(inst ->
-            LootModifier.codecStart(inst)
-                    .and(Codec.DOUBLE.optionalFieldOf("chance", 0.1).forGetter(m -> m.chance))
-                    .apply(inst, StructureLootTokenModifier::new));
+            LootModifier.codecStart(inst).apply(inst, StructureLootTokenModifier::new));
 
-    private final double chance;
-
-    public StructureLootTokenModifier(LootItemCondition[] conditions, int priority, double chance) {
+    public StructureLootTokenModifier(LootItemCondition[] conditions, int priority) {
         super(conditions, priority);
-        this.chance = chance;
     }
 
     private record Match(StructureLootRecipe recipe, StructureLootRecipe.LootRoll roll) {}
@@ -70,7 +65,8 @@ public class StructureLootTokenModifier extends LootModifier {
                 .orElse(null);
 
         if (match == null) return generatedLoot;
-        if (!match.recipe().canBeObtained()) return generatedLoot;
+        double chance = match.recipe().obtainedChance();
+        if (chance <= 0 || !SLServerConfig.isTokenEnabled(match.roll().type())) return generatedLoot;
 
         if (match.roll().type() != StructureLootRecipe.LootContextType.GENERIC) {
             Player player = findPlayer(context, match.roll().type());
@@ -79,7 +75,7 @@ public class StructureLootTokenModifier extends LootModifier {
             }
         }
 
-        if (context.getRandom().nextDouble() < this.chance) {
+        if (context.getRandom().nextDouble() < chance) {
             ItemStack token = createToken(match.roll().type());
             token.set(SLDataComponents.LOOT_ID.get(), match.recipe().lootId());
             token.set(DataComponents.MAX_DAMAGE, match.recipe().maxDurability());

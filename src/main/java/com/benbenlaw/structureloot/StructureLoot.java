@@ -49,7 +49,7 @@ public class StructureLoot {
         SLCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         SLLootModifiers.LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
 
-        //modContainer.registerConfig(ModConfig.Type.SERVER, SLServerConfig.SPEC, "bbl/loot_generator/server.toml");
+        modContainer.registerConfig(ModConfig.Type.SERVER, SLServerConfig.SPEC, "bbl/loot_generator/server.toml");
         modEventBus.addListener(this::networkingSetup);
     }
 

@@ -26,6 +26,7 @@
     }
   ],
   "max_durability": 8,
+  "obtained_chance": 0.1,
   "rf_per_tick": 1000,
   "rolls": 5
 }

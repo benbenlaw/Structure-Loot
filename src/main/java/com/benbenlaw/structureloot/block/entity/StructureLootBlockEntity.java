@@ -13,6 +13,7 @@ import com.benbenlaw.structureloot.recipe.StructureLootRecipe.LootRoll;
 import com.benbenlaw.structureloot.screen.custom.StructureLootMenu;
 import com.benbenlaw.structureloot.util.EnergyHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -36,7 +37,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Blocks;
@@ -302,7 +306,18 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
             if (lootTable == LootTable.EMPTY) continue;
 
             LootParams params = buildLootParams(serverLevel, roll);
-            allDrops.addAll(lootTable.getRandomItems(params, serverLevel.getRandom()));
+
+            ItemStack weapon = ItemUtil.getStack(inventory, UPGRADE);
+            ItemStack previousHand = null;
+            if (roll.type() == StructureLootRecipe.LootContextType.ENTITY && !weapon.isEmpty()) {
+                previousHand = fakePlayer.getItemInHand(InteractionHand.MAIN_HAND);
+                fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, weapon);
+            }
+            try {
+                allDrops.addAll(lootTable.getRandomItems(params, serverLevel.getRandom()));
+            } finally {
+                if (previousHand != null) fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, previousHand);
+            }
         }
 
         suppressSync = true;
@@ -338,11 +353,24 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
         syncCooldown = SYNC_INTERVAL_TICKS;
     }
 
+    private static float luckFrom(ItemStack stack) {
+        PotionContents contents = stack.get(DataComponents.POTION_CONTENTS);
+        if (contents == null) return 0;
+
+        for (MobEffectInstance effect : contents.getAllEffects()) {
+            if (effect.getEffect().is(MobEffects.LUCK)) return effect.getAmplifier() + 1;
+        }
+        return 0;
+    }
+
     private LootParams buildLootParams(ServerLevel serverLevel, LootRoll roll) {
         Vec3 origin = Vec3.atCenterOf(getBlockPos());
+        ItemStack upgrade = ItemUtil.getStack(inventory, UPGRADE);
+        float luck = luckFrom(upgrade);
 
         return switch (roll.type()) {
             case GENERIC -> new LootParams.Builder(serverLevel)
+                    .withLuck(luck)
                     .create(LootContextParamSets.EMPTY);
 
             case BLOCK -> {
@@ -351,11 +379,10 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
                         .map(net.minecraft.world.level.block.Block::defaultBlockState)
                         .orElse(Blocks.AIR.defaultBlockState());
 
-                ItemStack tool = ItemUtil.getStack(inventory, UPGRADE);
-
                 yield new LootParams.Builder(serverLevel)
+                        .withLuck(luck)
                         .withParameter(LootContextParams.ORIGIN, origin)
-                        .withParameter(LootContextParams.TOOL, tool)
+                        .withParameter(LootContextParams.TOOL, upgrade)
                         .withParameter(LootContextParams.BLOCK_STATE, fakeState)
                         .create(LootContextParamSets.BLOCK);
             }
@@ -370,15 +397,21 @@ public class StructureLootBlockEntity extends SyncableBlockEntity implements Men
                     fakeEntity.setPos(origin.x, origin.y, origin.z);
                 }
 
-                DamageSource damageSource = serverLevel.damageSources().generic();
+                boolean playerKill = !upgrade.isEmpty();
+                DamageSource damageSource = playerKill
+                        ? serverLevel.damageSources().playerAttack(fakePlayer)
+                        : serverLevel.damageSources().generic();
 
                 LootParams.Builder builder = new LootParams.Builder(serverLevel)
                         .withParameter(LootContextParams.ORIGIN, origin)
                         .withParameter(LootContextParams.DAMAGE_SOURCE, damageSource)
-                        .withParameter(LootContextParams.LAST_DAMAGE_PLAYER, fakePlayer)
-                        .withOptionalParameter(LootContextParams.ATTACKING_ENTITY, fakeEntity)
-                        .withOptionalParameter(LootContextParams.DIRECT_ATTACKING_ENTITY, fakeEntity)
-                        .withLuck(fakePlayer.getLuck());
+                        .withLuck(luck);
+
+                if (playerKill) {
+                    builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, fakePlayer)
+                            .withOptionalParameter(LootContextParams.ATTACKING_ENTITY, fakePlayer)
+                            .withOptionalParameter(LootContextParams.DIRECT_ATTACKING_ENTITY, fakePlayer);
+                }
 
                 if (fakeEntity != null) {
                     builder.withOptionalParameter(LootContextParams.THIS_ENTITY, fakeEntity);

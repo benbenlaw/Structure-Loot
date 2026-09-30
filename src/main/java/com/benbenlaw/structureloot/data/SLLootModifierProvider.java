@@ -20,8 +20,7 @@ public class SLLootModifierProvider extends GlobalLootModifierProvider {
 
         add("structure_loot_token", new StructureLootTokenModifier(
                 new LootItemCondition[]{},
-                1001,
-                0.1
+                1001
         ));
     }
 }

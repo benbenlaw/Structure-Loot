@@ -9,6 +9,7 @@
       "table": "minecraft:entities/wither_skeleton"
     }
   ],
+  "obtained_chance": 0.1,
   "rf_per_tick": 1400,
   "rolls": 1
 }

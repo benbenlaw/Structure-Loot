@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
+import static com.benbenlaw.structureloot.data.custom.StructureLootRecipeBuilder.BLOCK_OBTAINED_CHANCE;
 import static com.benbenlaw.structureloot.data.custom.StructureLootRecipeBuilder.structureLootRecipe;
 
 public class SLRecipeProvider extends RecipeProvider {
@@ -176,7 +177,7 @@ public class SLRecipeProvider extends RecipeProvider {
                 "minecraft:emerald_ore"
         );
 
-        blockLootRecipe("ancient_debris", 1, 600, 800, 10, false,
+        blockLootRecipe("ancient_debris", 1, 600, 800, 10, 0.0,
                 "blocks/ancient_debris",
                 "minecraft:ancient_debris"
         );
@@ -269,7 +270,7 @@ public class SLRecipeProvider extends RecipeProvider {
                 Identifier.parse(blockLootTable),
                 Identifier.parse(blockId)
         );
-        structureLootRecipe(Identifier.withDefaultNamespace(lootId), List.of(roll), rolls, duration, rfPerTick).save(output);
+        structureLootRecipe(Identifier.withDefaultNamespace(lootId), List.of(roll), rolls, duration, rfPerTick, 10, BLOCK_OBTAINED_CHANCE).save(output);
     }
 
     public void blockLootRecipe(String lootId, int rolls, int duration, int rfPerTick, int maxDurability,
@@ -278,7 +279,7 @@ public class SLRecipeProvider extends RecipeProvider {
                 Identifier.parse(blockLootTable),
                 Identifier.parse(blockId)
         );
-        structureLootRecipe(Identifier.withDefaultNamespace(lootId), List.of(roll), rolls, duration, rfPerTick, maxDurability).save(output);
+        structureLootRecipe(Identifier.withDefaultNamespace(lootId), List.of(roll), rolls, duration, rfPerTick, maxDurability, BLOCK_OBTAINED_CHANCE).save(output);
     }
 
     // ---- ENTITY loot recipes ----
@@ -309,34 +310,34 @@ public class SLRecipeProvider extends RecipeProvider {
         structureLootRecipe(Identifier.parse(lootId), List.of(rolls_), rolls, duration, rfPerTick, maxDurability).save(output);
     }
 
-    public void simpleLootRecipe(String lootId, int rolls, int duration, int rfPerTick, int maxDurability, boolean canBeObtained, String... lootTable) {
+    public void simpleLootRecipe(String lootId, int rolls, int duration, int rfPerTick, int maxDurability, double obtainedChance, String... lootTable) {
         List<LootRoll> lootTables = Stream.of(lootTable)
                 .map(Identifier::withDefaultNamespace)
                 .map(LootRoll::generic)
                 .toList();
 
-        structureLootRecipe(Identifier.withDefaultNamespace(lootId), lootTables, rolls, duration, rfPerTick, maxDurability, canBeObtained).save(output);
+        structureLootRecipe(Identifier.withDefaultNamespace(lootId), lootTables, rolls, duration, rfPerTick, maxDurability, obtainedChance).save(output);
     }
 
-    public void blockLootRecipe(String lootId, int rolls, int duration, int rfPerTick, int maxDurability, boolean canBeObtained,
+    public void blockLootRecipe(String lootId, int rolls, int duration, int rfPerTick, int maxDurability, double obtainedChance,
                                 String blockLootTable, String blockId) {
         LootRoll roll = LootRoll.block(
                 Identifier.parse(blockLootTable),
                 Identifier.parse(blockId)
         );
-        structureLootRecipe(Identifier.withDefaultNamespace(lootId), List.of(roll), rolls, duration, rfPerTick, maxDurability, canBeObtained).save(output);
+        structureLootRecipe(Identifier.withDefaultNamespace(lootId), List.of(roll), rolls, duration, rfPerTick, maxDurability, obtainedChance).save(output);
     }
 
-    public void entityLootRecipe(String lootId, int rolls, int duration, int rfPerTick, int maxDurability, boolean canBeObtained,
+    public void entityLootRecipe(String lootId, int rolls, int duration, int rfPerTick, int maxDurability, double obtainedChance,
                                  String entityLootTable, String entityId) {
         LootRoll roll = LootRoll.entity(
                 Identifier.parse(entityLootTable),
                 Identifier.parse(entityId)
         );
-        structureLootRecipe(Identifier.withDefaultNamespace(lootId), List.of(roll), rolls, duration, rfPerTick, maxDurability, canBeObtained).save(output);
+        structureLootRecipe(Identifier.withDefaultNamespace(lootId), List.of(roll), rolls, duration, rfPerTick, maxDurability, obtainedChance).save(output);
     }
 
-    public void mixedLootRecipe(String lootId, int rolls, int duration, int rfPerTick, int maxDurability, boolean canBeObtained, LootRoll... rolls_) {
-        structureLootRecipe(Identifier.parse(lootId), List.of(rolls_), rolls, duration, rfPerTick, maxDurability, canBeObtained).save(output);
+    public void mixedLootRecipe(String lootId, int rolls, int duration, int rfPerTick, int maxDurability, double obtainedChance, LootRoll... rolls_) {
+        structureLootRecipe(Identifier.parse(lootId), List.of(rolls_), rolls, duration, rfPerTick, maxDurability, obtainedChance).save(output);
     }
 }
