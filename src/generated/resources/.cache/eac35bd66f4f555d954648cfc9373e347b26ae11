@@ -1,4 +1,4 @@
-// 26.1.2	2026-10-16T10:22:01.0546594	structureloot Recipes
+// 26.1.2	2026-10-16T10:26:04.5513203	structureloot Recipes
 629e8fa7a9b6e25bc98e542fed8a901506d4ce65 data/structureloot/advancement/recipes/misc/structure_loot_block.json
 b2b52acc5b5f1c2ee85c1c86730e3f98cec79380 data/structureloot/advancement/recipes/misc/token_charm.json
 f694cba6aef73b541dc97efc515a3a1ecc6da5e4 data/structureloot/advancement/recipes/structures/structure_loot/ancient_city.json
@@ -21,6 +21,7 @@ a5c6f738ac3199390f1b8e0bfcc2a9fb76e732fa data/structureloot/advancement/recipes/
 73b0439935dbf007321c6d925541bae0d0d9d338 data/structureloot/advancement/recipes/structures/structure_loot/enderman.json
 9c796e11601e8f31c09005cee07d684e116a7317 data/structureloot/advancement/recipes/structures/structure_loot/endermite.json
 967c5cf3856b72915a8b3dc7fed0db444a67bb41 data/structureloot/advancement/recipes/structures/structure_loot/end_city.json
+878b7060e5f2cdc9ab9b0aa20135ce081fa34980 data/structureloot/advancement/recipes/structures/structure_loot/evoker.json
 34ecd23890da9d3c3053dc8565fc9715eb6dba0f data/structureloot/advancement/recipes/structures/structure_loot/fox.json
 88df3691c8b12a4fdeccdb15a9e6697dea525ef1 data/structureloot/advancement/recipes/structures/structure_loot/ghast.json
 e089190780548e33ef85c9c0ce1b187b9d28ffb4 data/structureloot/advancement/recipes/structures/structure_loot/glowstone.json
@@ -98,6 +99,7 @@ f95bde971a7fdc1ce3b99a4bbe8615de51802afa data/structureloot/recipe/structure_loo
 3331c1e3d2dbfeac0e834b60345223d3eebd669a data/structureloot/recipe/structure_loot/enderman.json
 cf99eae256cf58dd5aa90543a6f45e79de3e200d data/structureloot/recipe/structure_loot/endermite.json
 c17a86f3a18171a0c689484970aaeed9f3f017ff data/structureloot/recipe/structure_loot/end_city.json
+fa4ed0488387d6888d4bf0108c7596bce9e70af6 data/structureloot/recipe/structure_loot/evoker.json
 e962214acd68fc10da41da07f04b686fed168ce1 data/structureloot/recipe/structure_loot/fox.json
 a65af97d2a231317d3110bc997dc9385016bac86 data/structureloot/recipe/structure_loot/ghast.json
 f030b2e966e32970ca2c4a9159c42a23cb1e41e4 data/structureloot/recipe/structure_loot/glowstone.json
