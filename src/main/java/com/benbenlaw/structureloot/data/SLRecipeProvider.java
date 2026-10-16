@@ -235,6 +235,9 @@ public class SLRecipeProvider extends RecipeProvider {
         entityLootRecipe("glow_squid", 1, 300, 600, "entities/glow_squid", "minecraft:glow_squid");
         entityLootRecipe("endermite", 1, 300, 1000, "entities/endermite", "minecraft:endermite");
         entityLootRecipe("mooshroom", 1, 300, 1000, "entities/mooshroom", "minecraft:mooshroom");
+        entityLootRecipe("villager", 1, 300, 1000, "entities/villager", "minecraft:villager");
+        entityLootRecipe("rabbit", 1, 300, 600, "entities/rabbit", "minecraft:rabbit");
+        entityLootRecipe("wandering_trader", 1, 300, 600, "entities/wandering_trader", "minecraft:wandering_trader");
     }
 
     public void simpleLootRecipe(String lootId, String... lootTable) {

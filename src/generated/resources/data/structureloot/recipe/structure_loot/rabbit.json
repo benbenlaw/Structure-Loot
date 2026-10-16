@@ -1,0 +1,15 @@
+{
+  "type": "structureloot:structure_loot",
+  "duration": 300,
+  "loot_id": "minecraft:rabbit",
+  "loot_tables": [
+    {
+      "type": "entity",
+      "entity": "minecraft:rabbit",
+      "table": "minecraft:entities/rabbit"
+    }
+  ],
+  "obtained_chance": 0.1,
+  "rf_per_tick": 600,
+  "rolls": 1
+}

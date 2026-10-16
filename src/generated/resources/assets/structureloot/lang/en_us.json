@@ -47,7 +47,7 @@
   "tooltip.structureloot.entity": "Entity: %s",
   "tooltip.structureloot.entity_token": "Used inside the Loot Generator to create loot!",
   "tooltip.structureloot.structure": "Structure: %s",
-  "tooltip.structureloot.structure_loot_block": "Places a 3x3x3 block that creates loot using Tokens and RF",
+  "tooltip.structureloot.structure_loot_block": "Places a 3x3x3 block that creates loot using Tokens and RF. Top slot is for Tokens and the bottom is for the item you want the Generator to hold",
   "tooltip.structureloot.structure_token": "Used inside the Loot Generator to create loot!",
   "tooltip.structureloot.token_charm": "When in inventory, valid blocks and entities have a chance to drop a Token"
 }
